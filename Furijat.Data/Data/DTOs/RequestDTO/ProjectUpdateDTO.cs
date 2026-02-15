@@ -1,0 +1,19 @@
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Furijat.Data.Data.DTOs.RequestDTO;
+
+public record ProjectUpdateDTO
+{
+    public Guid Id { get; init; }
+    public string Title { get; init; }
+    public string Subtitle { get; init; }
+    public string Description { get; init; }
+    public Guid CategoryId { get; init; }
+    public Guid? UserId { get; init; }
+    public int Totalfundrequired { get; init; }
+    public string facebook { get; init; }
+    public string x { get; init; }
+    public string instagram { get; init; }
+    public IFormFile[] ImagesFiles { get; init; }
+    public bool IsAccepted { get; init; }
+}

@@ -7,13 +7,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="AutoMapper" Version="16.0.0" />
-      <PackageReference Include="MailKit" Version="4.14.1" />
-      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.2" />
+        <PackageReference Include="AutoMapper" Version="16.0.0"/>
+        <PackageReference Include="MailKit" Version="4.14.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.2"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Furijat.Data\Furijat.Data.csproj" />
+        <ProjectReference Include="..\Furijat.Data\Furijat.Data.csproj"/>
     </ItemGroup>
 
 </Project>

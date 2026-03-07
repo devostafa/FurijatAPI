@@ -1,11 +1,7 @@
-﻿using Furijat.Data.Data.DTOs.RequestDTO;
-using Furijat.Data.Data.DTOs.ResponseDTO;
-using Furijat.Services.Services.Donate;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿namespace Furijat.API.Controllers;
 
-namespace Furijat.API.Controllers;
-
+// Unused in the meantime (rely on p2p donations away from Furijat itself)
+/*
 [Route("donations")]
 public class DonationsController : BaseController
 {
@@ -35,5 +31,5 @@ public class DonationsController : BaseController
     {
         return await _donationservice.DonateToProject(donationrequest);
     }
-    
 }
+ */

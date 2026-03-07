@@ -1,10 +1,10 @@
-﻿using Furijat.Data.Data.Models;
-using Furijat.Services.Services.Mail;
+﻿using Furijat.Data.Models;
+using Furijat.Services.Mail;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Furijat.API.Controllers;
 
-[Route("Mail")]
+[Route("mail")]
 public class MailController(IMail mailService) : BaseController
 {
     [HttpPost("send")]

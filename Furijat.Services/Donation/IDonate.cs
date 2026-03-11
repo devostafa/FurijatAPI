@@ -1,7 +1,7 @@
 ﻿using Furijat.Data.DTOs.RequestDTO;
 using Furijat.Data.DTOs.ResponseDTO;
 
-namespace Furijat.Services.Donate;
+namespace Furijat.Services.Donation;
 
 public interface IDonate
 {

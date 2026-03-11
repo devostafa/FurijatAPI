@@ -1,7 +1,7 @@
 ﻿using Furijat.Data;
-using Furijat.Services.Repositories.BlogRepository;
-using Furijat.Services.Repositories.ProjectsRepository;
-using Furijat.Services.Repositories.UsersRepository;
+using Furijat.Data.Repositories.BlogRepository;
+using Furijat.Data.Repositories.ProjectsRepository;
+using Furijat.Data.Repositories.UsersRepository;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

@@ -3,13 +3,12 @@ using AutoMapper.QueryableExtensions;
 using Furijat.Data;
 using Furijat.Data.DTOs.RequestDTO;
 using Furijat.Data.DTOs.ResponseDTO;
-using Furijat.Data.Models;
+using Furijat.Data.Repositories.ProjectsRepository;
+using Furijat.Data.Repositories.UsersRepository;
 using Furijat.Services.Mail;
-using Furijat.Services.Repositories.ProjectsRepository;
-using Furijat.Services.Repositories.UsersRepository;
 using Microsoft.EntityFrameworkCore;
 
-namespace Furijat.Services.Donate;
+namespace Furijat.Services.Donation;
 
 public class Donate : IDonate
 {
@@ -66,7 +65,7 @@ public class Donate : IDonate
         var donator = await _usersrepo.GetUserDirect(donationtolog.UserId.ToString());
         var project = await _projectsrepo.GetProjectDirect(donationtolog.ProjectId.ToString());
 
-        var newdonationlog = new Donation
+        var newdonationlog = new Data.Models.Donation
         {
             Id = Guid.NewGuid(),
             UserId = donator.Id,

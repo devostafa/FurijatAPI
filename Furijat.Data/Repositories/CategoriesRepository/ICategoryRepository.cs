@@ -1,6 +1,6 @@
 ﻿using Furijat.Data.DTOs.ResponseDTO;
 
-namespace Furijat.Services.Repositories.CategoriesRepository;
+namespace Furijat.Data.Repositories.CategoriesRepository;
 
 public interface ICategoryRepository
 {

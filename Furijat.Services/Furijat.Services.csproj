@@ -16,4 +16,9 @@
         <ProjectReference Include="..\Furijat.Data\Furijat.Data.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <Folder Include="Donation\Commands\"/>
+        <Folder Include="Donation\Queries\"/>
+    </ItemGroup>
+
 </Project>

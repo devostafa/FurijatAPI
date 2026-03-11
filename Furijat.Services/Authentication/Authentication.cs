@@ -2,11 +2,11 @@
 using Furijat.Data.DTOs;
 using Furijat.Data.DTOs.RequestDTO;
 using Furijat.Data.Models;
+using Furijat.Data.Repositories.UsersRepository;
 using Furijat.Data.Services.PasswordHash;
 using Furijat.Services.JWT;
 using Furijat.Services.JWT.DTO;
 using Furijat.Services.Mail;
-using Furijat.Services.Repositories.UsersRepository;
 
 namespace Furijat.Services.Authentication;
 

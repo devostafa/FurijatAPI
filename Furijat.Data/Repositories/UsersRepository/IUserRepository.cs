@@ -1,7 +1,7 @@
 ﻿using Furijat.Data.DTOs;
 using Furijat.Data.Models;
 
-namespace Furijat.Services.Repositories.UsersRepository;
+namespace Furijat.Data.Repositories.UsersRepository;
 
 public interface IUserRepository
 {

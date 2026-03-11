@@ -1,6 +1,6 @@
 ﻿using Furijat.Data.DTOs.ResponseDTO;
-using Furijat.Services.Repositories.BlogRepository;
-using Furijat.Services.Repositories.CategoriesRepository;
+using Furijat.Data.Repositories.BlogRepository;
+using Furijat.Data.Repositories.CategoriesRepository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Furijat.API.Controllers;

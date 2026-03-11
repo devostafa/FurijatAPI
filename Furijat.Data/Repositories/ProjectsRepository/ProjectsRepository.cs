@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Furijat.Data;
-using Furijat.Data.DTOs.RequestDTO;
+﻿using Furijat.Data.DTOs.RequestDTO;
 using Furijat.Data.DTOs.ResponseDTO;
 using Furijat.Data.Models;
 using Microsoft.AspNetCore.Hosting;
@@ -9,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace Furijat.Services.Repositories.ProjectsRepository;
+namespace Furijat.Data.Repositories.ProjectsRepository;
 
 public class ProjectsRepository : IProjectsRepository
 {
@@ -43,9 +40,9 @@ public class ProjectsRepository : IProjectsRepository
             .FirstAsync(p => p.Id == Guid.Parse(projectid));
     }
 
-    public async Task<Project> GetProjectDirect(string projectid)
+    public async Task<Project> GetProjectDirect(string projectId)
     {
-        return await _db.Projects.Include(p => p.User).FirstAsync(p => p.Id == Guid.Parse(projectid));
+        return await _db.Projects.Include(p => p.User).FirstAsync(p => p.Id == Guid.Parse(projectId));
     }
 
     public async Task<bool> AddProject(ProjectRequestDTO projecttoadd)

@@ -1,12 +1,9 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Furijat.Data;
-using Furijat.Data.DTOs.ResponseDTO;
+﻿using Furijat.Data.DTOs.ResponseDTO;
 using Furijat.Data.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 
-namespace Furijat.Services.Repositories.BlogRepository;
+namespace Furijat.Data.Repositories.BlogRepository;
 
 public class BlogRepository : IBlogRepository
 {

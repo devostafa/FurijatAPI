@@ -1,12 +1,9 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Furijat.Data;
-using Furijat.Data.DTOs;
+﻿using Furijat.Data.DTOs;
 using Furijat.Data.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 
-namespace Furijat.Services.Repositories.UsersRepository;
+namespace Furijat.Data.Repositories.UsersRepository;
 
 public class UserRepository : IUserRepository
 {

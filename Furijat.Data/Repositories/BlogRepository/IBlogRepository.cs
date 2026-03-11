@@ -1,7 +1,7 @@
 ﻿using Furijat.Data.DTOs.ResponseDTO;
 using Furijat.Data.Models;
 
-namespace Furijat.Services.Repositories.BlogRepository;
+namespace Furijat.Data.Repositories.BlogRepository;
 
 public interface IBlogRepository
 {

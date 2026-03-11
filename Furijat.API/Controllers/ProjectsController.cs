@@ -1,34 +1,34 @@
 ﻿using Furijat.Data.DTOs.RequestDTO;
 using Furijat.Data.DTOs.ResponseDTO;
-using Furijat.Services.Repositories.ProjectsRepository;
+using Furijat.Data.Repositories.ProjectsRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Furijat.API.Controllers;
 
-[Route("Projects")]
+[Route("projects")]
 public class ProjectsController : BaseController
 {
-    private readonly IProjectsRepository _projectsservice;
+    private readonly IProjectsRepository _projectsRepo;
 
-    public ProjectsController(IProjectsRepository projectsservice)
+    public ProjectsController(IProjectsRepository projectsRepo)
     {
-        _projectsservice = projectsservice;
+        _projectsRepo = projectsRepo;
     }
 
-    [HttpGet("GetProjects/{pagenumber}")]
+    [HttpGet("projects/{pagenumber}")]
     public async Task<IActionResult> GetProjects(int pagenumber)
     {
         var pageSize = 10;
 
         if (pagenumber == 0)
         {
-            List<ProjectResponseDTO> projects = await _projectsservice.GetProjects();
+            List<ProjectResponseDTO> projects = await _projectsRepo.GetProjects();
             return Ok(projects);
         }
         else
         {
-            List<ProjectResponseDTO> projects = await _projectsservice.GetProjects();
+            List<ProjectResponseDTO> projects = await _projectsRepo.GetProjects();
             var totalPages = 0;
             var totalPagesDecimal = projects.Count / (decimal)pageSize;
 
@@ -51,14 +51,14 @@ public class ProjectsController : BaseController
         }
     }
 
-    [HttpGet("GetProject/{projectid}")]
+    [HttpGet("project/{projectid}")]
     public async Task<ProjectResponseDTO> GetProject(string projectid)
     {
-        return await _projectsservice.GetProject(projectid);
+        return await _projectsRepo.GetProject(projectid);
     }
 
     [Authorize]
-    [HttpPost("AddProject")]
+    [HttpPost("project/add")]
     public async Task<bool> AddProject(ProjectRequestDTO projecttoadd)
     {
         var authheader = HttpContext.Request.Headers["Authorization"];
@@ -71,23 +71,23 @@ public class ProjectsController : BaseController
 
         if (!string.IsNullOrEmpty(token))
         {
-            return await _projectsservice.AddProject(projecttoadd);
+            return await _projectsRepo.AddProject(projecttoadd);
         }
 
         return false;
     }
 
     [Authorize]
-    [HttpPost("UpdateProject")]
+    [HttpPost("project/update")]
     public async Task<bool> UpdateProject(ProjectRequestDTO projecttoadd)
     {
-        return await _projectsservice.UpdateProject(projecttoadd);
+        return await _projectsRepo.UpdateProject(projecttoadd);
     }
 
     [Authorize]
-    [HttpPost("RemoveProject")]
+    [HttpPost("project/remove")]
     public async Task<bool> RemoveProject(string projectid)
     {
-        return await _projectsservice.RemoveProject(projectid);
+        return await _projectsRepo.RemoveProject(projectid);
     }
 }

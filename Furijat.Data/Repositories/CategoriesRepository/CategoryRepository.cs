@@ -1,11 +1,7 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Furijat.Data;
-using Furijat.Data.DTOs.ResponseDTO;
+﻿using Furijat.Data.DTOs.ResponseDTO;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 
-namespace Furijat.Services.Repositories.CategoriesRepository;
+namespace Furijat.Data.Repositories.CategoriesRepository;
 
 public class CategoryRepository : ICategoryRepository
 {

@@ -1,7 +1,7 @@
 ﻿using Furijat.Data.DTOs;
 using Furijat.Data.DTOs.RequestDTO;
+using Furijat.Data.Repositories.UsersRepository;
 using Furijat.Services.Authentication;
-using Furijat.Services.Repositories.UsersRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

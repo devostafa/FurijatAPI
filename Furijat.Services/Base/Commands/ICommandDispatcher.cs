@@ -2,5 +2,5 @@
 
 public interface ICommandDispatcher
 {
-    Task<TResult> Send<TResult>(ICommand<TResult> command, CancellationToken ct);
+    Task<TResult> Dispatch<TResult>(ICommand<TResult> command, CancellationToken ct = default);
 }

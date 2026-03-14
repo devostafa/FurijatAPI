@@ -11,11 +11,9 @@ public interface IUserRepository
 
     public Task<bool> CheckUser(string username);
 
-    public Task<User> GetUserDirect(string userid);
-
     public Task<List<UserDTO>> GetUers();
 
-    public Task<bool> AddUser(UserToAddDTO usertoadd);
+    public Task<bool> AddUser(UserToAddDTO newUser, string hashedPassword);
 
     public Task CreateFolders();
 

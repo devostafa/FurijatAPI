@@ -1,4 +1,6 @@
-﻿namespace Furijat.Services.Base.Commands;
+﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace Furijat.Services.Base.Commands;
 
 public class CommandDispatcher : ICommandDispatcher
 {
@@ -9,8 +11,9 @@ public class CommandDispatcher : ICommandDispatcher
         _serviceProvider = serviceProvider;
     }
 
-    public async Task<TResult> Send<TResult>(ICommand<TResult> command, CancellationToken ct)
+    public async Task<TResult> Dispatch<TResult>(ICommand<TResult> command, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        ICommandHandler<ICommand<TResult>, TResult> handler = _serviceProvider.GetRequiredService<ICommandHandler<ICommand<TResult>, TResult>>();
+        return await handler.HandleAsync(command, ct);
     }
 }

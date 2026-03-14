@@ -2,35 +2,29 @@
 using System.Security.Claims;
 using System.Text;
 using Furijat.Services.JWT.DTO;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Furijat.Services.JWT;
+namespace Furijat.Services.Jwt;
 
-public class Jwt : IJWT
+public class JWT : IJWT
 {
-    private readonly IHttpContextAccessor _httpcontext;
     private readonly IConfiguration _config;
-    private string apihost;
     private readonly string audienceUrl;
     private readonly string jwtseckey;
 
-    public Jwt(IConfiguration config, IHttpContextAccessor httpcontext)
+    public JWT(IConfiguration config)
     {
         _config = config;
         jwtseckey = _config["secretkey"]!;
         audienceUrl = _config["clientURL"]!;
-        _httpcontext = httpcontext;
     }
 
-    public string CreateToken(JWTRequestDTO jwtrequest)
+    public string CreateToken(JWTRequestDTO jwtRequest)
     {
-        //string baseUrl = $"{_httpcontext.HttpContext.Request.Scheme}://{_httpcontext.HttpContext.Request.Host}{_httpcontext.HttpContext.Request.PathBase}";
-
         List<Claim> claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, jwtrequest.username), new Claim("userid", jwtrequest.Id.ToString())
+            new Claim(ClaimTypes.Name, jwtRequest.username), new Claim("userid", jwtRequest.Id.ToString())
         };
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtseckey));
         var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);

@@ -4,7 +4,7 @@ using Furijat.Data.DTOs.RequestDTO;
 using Furijat.Data.Models;
 using Furijat.Data.Repositories.UsersRepository;
 using Furijat.Data.Services.PasswordHash;
-using Furijat.Services.JWT;
+using Furijat.Services.Jwt;
 using Furijat.Services.JWT.DTO;
 using Furijat.Services.Mail;
 

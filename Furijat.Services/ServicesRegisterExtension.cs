@@ -1,18 +1,16 @@
 ﻿using System.Text;
 using Furijat.Data;
-using Furijat.Data.Repositories.BlogRepository;
-using Furijat.Data.Repositories.CategoriesRepository;
-using Furijat.Data.Repositories.ProjectsRepository;
-using Furijat.Data.Repositories.UsersRepository;
 using Furijat.Data.Services.PasswordHash;
 using Furijat.Services.Authentication;
 using Furijat.Services.AutoMapper;
+using Furijat.Services.Base.Commands;
 using Furijat.Services.Donation;
-using Furijat.Services.JWT;
+using Furijat.Services.Jwt;
 using Furijat.Services.Mail;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Scrutor;
 
 namespace Furijat.Services;
 
@@ -20,17 +18,33 @@ public static class ServicesRegisterExtension
 {
     public static void AddServices(this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddDbContext<DataContext>();
         serviceCollection.AddHttpContextAccessor();
         serviceCollection.AddScoped<IPasswordHash, PasswordHash>();
         serviceCollection.AddScoped<IAuthentication, Authentication.Authentication>();
-        serviceCollection.AddScoped<IJWT, Jwt>();
+        serviceCollection.AddScoped<IJWT, Jwt.JWT>();
         serviceCollection.AddScoped<IDonate, Donate>();
         serviceCollection.AddScoped<IMail, Mail.Mail>();
-        serviceCollection.AddScoped<IProjectsRepository, ProjectsRepository>();
-        serviceCollection.AddScoped<ICategoryRepository, CategoryRepository>();
-        serviceCollection.AddScoped<IBlogRepository, BlogRepository>();
-        serviceCollection.AddScoped<IUserRepository, UserRepository>();
+
+        serviceCollection.Scan(selector => selector
+            .FromAssemblyOf<CommandDispatcher>()
+            .AddClasses()
+            .UsingRegistrationStrategy(RegistrationStrategy.Skip)
+            .AsImplementedInterfaces()
+            .WithScopedLifetime()
+        );
+    }
+
+    public static void AddDatabaseServices(this IServiceCollection serviceCollection)
+    {
+        serviceCollection.AddDbContext<DataContext>();
+
+        serviceCollection.Scan(selector => selector
+            .FromAssemblyOf<DataContext>()
+            .AddClasses()
+            .UsingRegistrationStrategy(RegistrationStrategy.Skip)
+            .AsImplementedInterfaces()
+            .WithScopedLifetime()
+        );
         serviceCollection.AddAutoMapper(cfg => { }, typeof(MapperProfile));
     }
 

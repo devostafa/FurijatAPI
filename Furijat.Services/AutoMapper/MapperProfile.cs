@@ -14,7 +14,7 @@ public class MapperProfile : Profile
         //model to DTO
         CreateMap<User, UserDTO>();
         CreateMap<Project, ProjectResponseDTO>();
-        CreateMap<Donation, DonationResponseDTO>();
+        CreateMap<Data.Models.Donation, DonationResponseDTO>();
         CreateMap<BlogArticle, BlogArticleResponseDTO>();
         CreateMap<User, JWTRequestDTO>();
         CreateMap<RegisterRequestDTO, UserDTO>();
@@ -22,8 +22,8 @@ public class MapperProfile : Profile
 
         //DTO to Model
         CreateMap<ProjectRequestDTO, Project>();
-        CreateMap<DonationRequestDTO, Donation>();
-        CreateMap<DonationResponseDTO, Donation>();
+        CreateMap<DonationRequestDTO, Data.Models.Donation>();
+        CreateMap<DonationResponseDTO, Data.Models.Donation>();
         CreateMap<UserDTO, User>();
 
         //DTO to DTO

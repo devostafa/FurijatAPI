@@ -1,20 +1,19 @@
 ﻿using Furijat.Data.DTOs.RequestDTO;
-using Furijat.Data.Models;
+using Furijat.Data.DTOs.ResponseDTO;
 
 namespace Furijat.Data.Repositories.ProjectsRepository;
 
 public interface IProjectsRepository
 {
-    public Task<List<Project>> GetProjects();
+    public Task<List<ProjectResponseDTO>> GetProjectsAsync(string? categoryId);
 
-    //public Task<List<Project>> GetProjectsOfCategory(string categoryid);
-    public Task<Project> GetProject(string projectId);
+    public Task<ProjectResponseDTO> GetProjectAsync(string projectId);
 
-    public Task<bool> AddProject(ProjectRequestDTO requestDto);
+    public Task<bool> AddProjectAsync(ProjectRequestDTO requestDto);
 
-    public Task<bool> UpdateProject(ProjectRequestDTO requestDto);
+    public Task<bool> UpdateProjectAsync(ProjectRequestDTO requestDto);
 
-    public Task<bool> RemoveProject(string projectId);
+    public Task<bool> RemoveProjectAsync(string projectId);
 
-    public Task CreateFolders();
+    public Task CreateFoldersAsync();
 }

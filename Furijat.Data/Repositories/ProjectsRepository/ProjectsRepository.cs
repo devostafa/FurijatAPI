@@ -22,11 +22,6 @@ public class ProjectsRepository : IProjectsRepository
         _hostenv = hostenv;
     }
 
-    public async Task<List<ProjectResponseDTO>> GetProjects()
-    {
-        return await _db.Projects.ProjectTo<ProjectResponseDTO>(_mapper.ConfigurationProvider).ToListAsync();
-    }
-
     /*
     public async Task<List<Project>> GetProjectsOfCategory(string categoryid)
     {
@@ -34,18 +29,13 @@ public class ProjectsRepository : IProjectsRepository
     }
     */
 
-    public async Task<ProjectResponseDTO> GetProject(string projectid)
+    public async Task<ProjectResponseDTO> GetProjectAsync(string projectid)
     {
         return await _db.Projects.Include(p => p.User).ProjectTo<ProjectResponseDTO>(_mapper.ConfigurationProvider)
             .FirstAsync(p => p.Id == Guid.Parse(projectid));
     }
 
-    public async Task<Project> GetProjectDirect(string projectId)
-    {
-        return await _db.Projects.Include(p => p.User).FirstAsync(p => p.Id == Guid.Parse(projectId));
-    }
-
-    public async Task<bool> AddProject(ProjectRequestDTO projecttoadd)
+    public async Task<bool> AddProjectAsync(ProjectRequestDTO projecttoadd)
     {
         var newproject = _mapper.Map<Project>(projecttoadd);
         Directory.CreateDirectory(Path.Combine(_hostenv.ContentRootPath, "Storage", "Projects", $"{newproject.Id}", "Images"));
@@ -61,7 +51,7 @@ public class ProjectsRepository : IProjectsRepository
         return true;
     }
 
-    public async Task<bool> UpdateProject(ProjectRequestDTO projecttoupdate)
+    public async Task<bool> UpdateProjectAsync(ProjectRequestDTO projecttoupdate)
     {
         var selectedproject = await _db.Projects.FirstAsync(p => p.Id == projecttoupdate.Id);
         selectedproject = _mapper.Map<Project>(projecttoupdate);
@@ -91,7 +81,7 @@ public class ProjectsRepository : IProjectsRepository
         return true;
     }
 
-    public async Task<bool> RemoveProject(string projectid)
+    public async Task<bool> RemoveProjectAsync(string projectid)
     {
         var selectedproject = await _db.Projects.FindAsync(Guid.Parse(projectid));
 
@@ -111,7 +101,7 @@ public class ProjectsRepository : IProjectsRepository
     }
 
 
-    public async Task CreateFolders()
+    public async Task CreateFoldersAsync()
     {
         try
         {
@@ -130,6 +120,16 @@ public class ProjectsRepository : IProjectsRepository
         {
             throw err;
         }
+    }
+
+    public async Task<List<ProjectResponseDTO>> GetProjects()
+    {
+        return await _db.Projects.ProjectTo<ProjectResponseDTO>(_mapper.ConfigurationProvider).ToListAsync();
+    }
+
+    public async Task<Project> GetProjectDirect(string projectId)
+    {
+        return await _db.Projects.Include(p => p.User).FirstAsync(p => p.Id == Guid.Parse(projectId));
     }
 
     private async Task<bool> AddProjectImage(string projectid, IFormFile imgfile)

@@ -1,4 +1,4 @@
-﻿using Furijat.Services.JWT.DTO;
+﻿using Furijat.Services.Jwt.DTO;
 
 namespace Furijat.Services.Jwt;
 

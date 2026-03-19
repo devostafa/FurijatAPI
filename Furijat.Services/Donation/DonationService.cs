@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Furijat.Services.Donation;
 
-public class Donate : IDonate
+public class DonationService : IDonationService
 {
     private readonly DataContext _db;
     private readonly IMail _mailservice;

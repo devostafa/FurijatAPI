@@ -2,5 +2,5 @@
 
 public interface IQueryDispatcher
 {
-    Task<TResult> Query<TResult>(IQuery<TResult> query, CancellationToken ct = default);
+    Task<TResult> QueryAsync<TResult>(IQuery<TResult> query, CancellationToken ct = default);
 }

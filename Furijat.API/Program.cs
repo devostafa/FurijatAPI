@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 using Furijat.Services;
-using Furijat.Services.StartupService;
+using Furijat.Services.Startup;
 using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);

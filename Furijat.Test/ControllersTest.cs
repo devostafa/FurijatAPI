@@ -33,7 +33,7 @@ public class ControllersTest
     [Fact]
     public async void AddProject()
     {
-        var url = "http://localhost:5116/Projects/AddProject";
+        var url = "http://localhost:5116/Projects/AddProjectAsync";
 
         var newproject = new ProjectRequestDTO
         {

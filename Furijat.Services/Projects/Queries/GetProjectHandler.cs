@@ -1,22 +1,22 @@
-﻿using Furijat.Services.Base.Queries;
+﻿using Furijat.Data.DTOs.ResponseDTO;
+using Furijat.Data.Repositories.ProjectsRepository;
+using Furijat.Services.Base.Queries;
 
 namespace Furijat.Services.Projects.Queries;
 
-public class GetProjectHandler : IQueryHandler<GetProjectQuery, ProjectDto>
+public class GetProjectHandler : IQueryHandler<GetProjectQuery, ProjectResponseDTO>
 {
 
-    private readonly IProjectRepository _projectRepository;
+    private readonly IProjectsRepository _projectRepository;
 
-    public GetProjectHandler(IProjectRepository projectRepository)
+    public GetProjectHandler(IProjectsRepository projectRepository)
     {
         _projectRepository = projectRepository;
     }
 
-    public async Task<ProjectDto> Handle(GetProjectQuery request, CancellationToken cancellationToken)
+    public async Task<ProjectResponseDTO> HandleAsync(GetProjectQuery request, CancellationToken cancellationToken = default)
     {
-        var project = await _projectRepository..GetByIdAsync(request.Id);
-
-        var result = 
+        var result = await _projectRepository.GetProjectAsync(request.Id);
 
         return result;
     }

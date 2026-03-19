@@ -11,9 +11,10 @@ public class QueryDispatcher : IQueryDispatcher
         _serviceProvider = serviceProvider;
     }
 
-    public async Task<TResult> Query<TResult>(IQuery<TResult> query, CancellationToken ct = default)
+    public async Task<TResult> QueryAsync<TResult>(IQuery<TResult> query, CancellationToken ct = default)
     {
         IQueryHandler<IQuery<TResult>, TResult> handler = _serviceProvider.GetRequiredService<IQueryHandler<IQuery<TResult>, TResult>>();
+
         return await handler.HandleAsync(query, ct);
     }
 }

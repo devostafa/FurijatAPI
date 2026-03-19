@@ -1,4 +1,4 @@
-﻿namespace Furijat.Services.JWT.DTO;
+﻿namespace Furijat.Services.Jwt.DTO;
 
 public class JWTRequestDTO
 {

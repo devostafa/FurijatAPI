@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Furijat.Services.StartupService;
+namespace Furijat.Services.Startup;
 
 public static class Startup
 {
@@ -22,7 +22,7 @@ public static class Startup
         newsService.CreateNewsFolders();
 
         var projectsService = serviceProvider.GetRequiredService<IProjectsRepository>();
-        projectsService.CreateFolders();
+        projectsService.CreateFoldersAsync();
 
         var usersService = serviceProvider.GetRequiredService<IUserRepository>();
         usersService.CreateFolders();

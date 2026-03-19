@@ -3,7 +3,7 @@ using Furijat.Data.DTOs.ResponseDTO;
 
 namespace Furijat.Services.Donation;
 
-public interface IDonate
+public interface IDonationService
 {
     public Task<List<DonationResponseDTO>> GetDonations();
 

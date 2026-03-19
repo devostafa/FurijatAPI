@@ -5,7 +5,7 @@ using Furijat.Data.Models;
 using Furijat.Data.Repositories.UsersRepository;
 using Furijat.Data.Services.PasswordHash;
 using Furijat.Services.Jwt;
-using Furijat.Services.JWT.DTO;
+using Furijat.Services.Jwt.DTO;
 using Furijat.Services.Mail;
 
 namespace Furijat.Services.Authentication;
@@ -30,7 +30,7 @@ public class Authentication : IAuthentication
     public async Task<string> Login(LoginRequestDTO loginreq)
     {
         var token = "";
-        // Check username in the database
+
         var checkuser = await _usersRepo.CheckUser(loginreq.Username);
 
         if (!checkuser)
@@ -40,7 +40,6 @@ public class Authentication : IAuthentication
 
         var loginuser = await _usersRepo.GetUserByName(loginreq.Username);
         var userjwtreq = _mapper.Map<JWTRequestDTO>(loginuser);
-        //2nd verify password
         var checkpassword = await VerifyPassword(loginreq.Password, loginuser.Hashedpassword);
 
         if (checkpassword)
@@ -60,18 +59,13 @@ public class Authentication : IAuthentication
             return false;
         }
 
-        //map new user data from registerreq
+
         var newUserDto = _mapper.Map<UserToAddDTO>(registerreq);
-        //1-hash password
+
         var hashedpassword = _passwordHashService.CreateHashedPassword(registerreq.Password);
 
-        //2-assign hashedpassword to A NEW COPY OF newUserDTO
-        newUserDto = newUserDto with
-        {
-            Hashedpassword = hashedpassword, Usertype = "user"
-        };
-        //3-add to database
-        var successfulAdd = await _usersRepo.AddUser(newUserDto);
+
+        var successfulAdd = await _usersRepo.AddUser(newUserDto, hashedpassword);
 
         if (successfulAdd)
         {
@@ -84,11 +78,11 @@ public class Authentication : IAuthentication
 
     private async Task<bool> VerifyPassword(string passwordtoverify, string hashedpassword)
     {
-        //1-extract salt from database user hashedpassword, pass string pattern SALT.HASHEDPASSWORD
+        //1-extract Salt from database user hashedpassword, pass string pattern SALT.HASHEDPASSWORD
         var extractedsavedpassword = hashedpassword.Split(".");
         var extractedsalt = extractedsavedpassword[0];
         var extractedhashedpass = extractedsavedpassword[1];
-        //2-generate hashed password with given salt
+        //2-generate hashed password with given Salt
         var passwordtotest = _passwordHashService.HashPasswordWithGivenSalt(extractedsalt, passwordtoverify);
 
         //3-compare

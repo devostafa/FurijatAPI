@@ -22,7 +22,7 @@ public static class ServicesRegisterExtension
         serviceCollection.AddScoped<IPasswordHash, PasswordHash>();
         serviceCollection.AddScoped<IAuthentication, Authentication.Authentication>();
         serviceCollection.AddScoped<IJWT, Jwt.JWT>();
-        serviceCollection.AddScoped<IDonate, Donate>();
+        serviceCollection.AddScoped<IDonationService, DonationService>();
         serviceCollection.AddScoped<IMail, Mail.Mail>();
 
         serviceCollection.Scan(selector => selector

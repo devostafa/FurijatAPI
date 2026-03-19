@@ -2,5 +2,5 @@
 
 public interface ICommandDispatcher
 {
-    Task<TResult> Dispatch<TResult>(ICommand<TResult> command, CancellationToken ct = default);
+    Task<TResult> DispatchAsync<TResult>(ICommand<TResult> command, CancellationToken ct = default);
 }

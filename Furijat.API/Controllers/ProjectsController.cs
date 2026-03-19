@@ -23,12 +23,12 @@ public class ProjectsController : BaseController
 
         if (pagenumber == 0)
         {
-            List<ProjectResponseDTO> projects = await _projectsRepo.GetProjects();
+            List<ProjectResponseDTO> projects = await _projectsRepo.GetProjectsAsync();
             return Ok(projects);
         }
         else
         {
-            List<ProjectResponseDTO> projects = await _projectsRepo.GetProjects();
+            List<ProjectResponseDTO> projects = await _projectsRepo.GetProjectsAsync();
             var totalPages = 0;
             var totalPagesDecimal = projects.Count / (decimal)pageSize;
 
@@ -54,7 +54,7 @@ public class ProjectsController : BaseController
     [HttpGet("project/{projectid}")]
     public async Task<ProjectResponseDTO> GetProject(string projectid)
     {
-        return await _projectsRepo.GetProject(projectid);
+        return await _projectsRepo.GetProjectAsync(projectid);
     }
 
     [Authorize]
@@ -71,7 +71,7 @@ public class ProjectsController : BaseController
 
         if (!string.IsNullOrEmpty(token))
         {
-            return await _projectsRepo.AddProject(projecttoadd);
+            return await _projectsRepo.AddProjectAsync(projecttoadd);
         }
 
         return false;
@@ -81,13 +81,13 @@ public class ProjectsController : BaseController
     [HttpPost("project/update")]
     public async Task<bool> UpdateProject(ProjectRequestDTO projecttoadd)
     {
-        return await _projectsRepo.UpdateProject(projecttoadd);
+        return await _projectsRepo.UpdateProjectAsync(projecttoadd);
     }
 
     [Authorize]
     [HttpPost("project/remove")]
     public async Task<bool> RemoveProject(string projectid)
     {
-        return await _projectsRepo.RemoveProject(projectid);
+        return await _projectsRepo.RemoveProjectAsync(projectid);
     }
 }

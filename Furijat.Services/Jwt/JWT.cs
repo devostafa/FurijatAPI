@@ -1,7 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Furijat.Services.JWT.DTO;
+using Furijat.Services.Jwt.DTO;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -9,34 +9,34 @@ namespace Furijat.Services.Jwt;
 
 public class JWT : IJWT
 {
+    private readonly string _audienceUrl;
     private readonly IConfiguration _config;
-    private readonly string audienceUrl;
-    private readonly string jwtseckey;
+    private readonly string _secretKey;
 
     public JWT(IConfiguration config)
     {
         _config = config;
-        jwtseckey = _config["secretkey"]!;
-        audienceUrl = _config["clientURL"]!;
+        _secretKey = _config["SecretKey"] ?? throw new InvalidOperationException();
+        _audienceUrl = _config["ClientUrl"] ?? throw new InvalidOperationException();
     }
 
     public string CreateToken(JWTRequestDTO jwtRequest)
     {
         List<Claim> claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, jwtRequest.username), new Claim("userid", jwtRequest.Id.ToString())
+            new Claim(ClaimTypes.Name, jwtRequest.username), new Claim(ClaimTypes.Role, jwtRequest.userType)
         };
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtseckey));
-        var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 
-        var tokendata = new JwtSecurityToken(
+        var data = new JwtSecurityToken(
             claims: claims,
-            issuer: _config["URL"],
-            audience: audienceUrl,
-            expires: DateTime.Now.AddDays(2),
-            signingCredentials: cred
+            issuer: _config["Url"],
+            audience: _audienceUrl,
+            expires: DateTime.Now.AddDays(14),
+            signingCredentials: creds
         );
-        var jwt = new JwtSecurityTokenHandler().WriteToken(tokendata);
-        return jwt;
+        var token = new JwtSecurityTokenHandler().WriteToken(data);
+        return token;
     }
 }

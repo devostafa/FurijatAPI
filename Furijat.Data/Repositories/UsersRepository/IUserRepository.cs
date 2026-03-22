@@ -5,19 +5,19 @@ namespace Furijat.Data.Repositories.UsersRepository;
 
 public interface IUserRepository
 {
-    public Task<UserDTO> GetUser(string userid);
+    public Task<UserDTO> GetUserAsync(string userid);
 
-    public Task<User> GetUserByName(string username);
+    public Task<User> GetUserByNameAsync(string username);
 
-    public Task<bool> CheckUser(string username);
+    public Task<bool> CheckUserExistsAsync(string username);
 
-    public Task<List<UserDTO>> GetUers();
+    public Task<List<UserDTO>> GetUersAsync();
 
-    public Task<bool> AddUser(UserToAddDTO newUser, string hashedPassword);
+    public Task<bool> AddUserAsync(UserToAddDTO newUser, string hashedPassword);
 
     public Task CreateFolders();
 
-    public Task<bool> UpdateUser(UserDTO usertoupdate);
+    public Task<bool> UpdateUserAsync(UserDTO usertoupdate);
 
-    public Task<bool> RemoveUser(string userid);
+    public Task<bool> RemoveUserAsync(string userid);
 }

@@ -18,41 +18,33 @@ public class UserRepository : IUserRepository
         _webHostEnv = webHostEnv;
     }
 
-    public async Task<UserDTO> GetUser(string userid)
+    public async Task<UserDTO> GetUserAsync(string userid)
     {
         return await _db.Users.Include(u => u.Project).ProjectTo<UserDTO>(_mapper.ConfigurationProvider)
             .FirstAsync(u => u.Id == Guid.Parse(userid));
     }
 
-    public async Task<User> GetUserByName(string username)
+    public async Task<User> GetUserByNameAsync(string username)
     {
-        return await _db.Users.FirstAsync(u => u.Username == username);
+        return await _db.Users.FirstAsync(u => u.Name == username);
     }
 
-    public async Task<bool> CheckUser(string username)
+    public async Task<bool> CheckUserExistsAsync(string username)
     {
-        return await _db.Users.AnyAsync(u => u.Username == username);
+        return await _db.Users.AnyAsync(u => u.Name == username);
     }
 
-    public async Task<User> GetUserDirect(string userid)
-    {
-        return await _db.Users.FirstAsync(u => u.Id == Guid.Parse(userid));
-    }
-
-    public async Task<List<UserDTO>> GetUers()
+    public async Task<List<UserDTO>> GetUersAsync()
     {
         return await _db.Users.Include(u => u.Project).ProjectTo<UserDTO>(_mapper.ConfigurationProvider).ToListAsync();
     }
 
-    public async Task<bool> AddUser(UserToAddDTO usertoadd)
+    public async Task<bool> AddUserAsync(UserToAddDTO newUser, string hashedPassword)
     {
-        var newUser = _mapper.Map<User>(usertoadd);
-        await _db.Users.AddAsync(newUser);
-        await _db.SaveChangesAsync();
-        return true;
+        throw new NotImplementedException();
     }
 
-    public async Task<bool> UpdateUser(UserDTO usertoupdate)
+    public async Task<bool> UpdateUserAsync(UserDTO usertoupdate)
     {
         var query = await _db.Users.Include(u => u.Project).FirstAsync(u => u.Id == usertoupdate.Id);
         query = _mapper.Map<User>(usertoupdate);
@@ -61,7 +53,7 @@ public class UserRepository : IUserRepository
         return true;
     }
 
-    public async Task<bool> RemoveUser(string userid)
+    public async Task<bool> RemoveUserAsync(string userid)
     {
         var query = await _db.Users.FindAsync(Guid.Parse(userid));
 
@@ -94,5 +86,18 @@ public class UserRepository : IUserRepository
         {
             throw err;
         }
+    }
+
+    public async Task<User> GetUserDirect(string userid)
+    {
+        return await _db.Users.FirstAsync(u => u.Id == Guid.Parse(userid));
+    }
+
+    public async Task<bool> AddUser(UserToAddDTO usertoadd)
+    {
+        var newUser = _mapper.Map<User>(usertoadd);
+        await _db.Users.AddAsync(newUser);
+        await _db.SaveChangesAsync();
+        return true;
     }
 }

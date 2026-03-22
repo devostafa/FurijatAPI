@@ -37,6 +37,6 @@ public class AuthenticationController : BaseController
     public async Task<UserDTO> GetUserInfo()
     {
         var userid = HttpContext.User.FindFirst("userid").Value;
-        return await _useRepo.GetUser(userid);
+        return await _useRepo.GetUserAsync(userid);
     }
 }

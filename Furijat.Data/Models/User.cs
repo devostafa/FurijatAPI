@@ -5,7 +5,7 @@ namespace Furijat.Data.Models;
 public class User
 {
     [Key] public Guid Id { get; set; }
-    public string Username { get; set; }
+    public string Name { get; set; }
     public string Hashedpassword { get; set; }
     public string Usertype { get; set; }
     public int PhoneNumber { get; set; }

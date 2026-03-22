@@ -4,9 +4,8 @@ namespace Furijat.Data.DTOs;
 
 public record UserDTO
 {
-
     public Guid Id { get; init; }
-    public string Username { get; init; } = "";
+    public string Name { get; init; } = "";
     public string Usertype { get; init; } = "";
     public int Phonenumber { get; init; } = 0;
     public string Email { get; init; } = "";

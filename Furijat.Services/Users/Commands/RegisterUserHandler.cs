@@ -1,4 +1,4 @@
-﻿using Furijat.Data.Models;
+﻿using Furijat.Data.DTOs.RequestDTO;
 using Furijat.Data.Repositories.UsersRepository;
 using Furijat.Data.Services.PasswordHash;
 using Furijat.Services.Base.Commands;
@@ -23,18 +23,16 @@ public class RegisterUserHandler : ICommandHandler<RegisterUserCommand, bool>
     {
         var hashedPassword = _passwordHashService.CreateHashedPassword(command.RegisterRequest.Password);
 
-        var checkAdd = await _userRepository.AddUser(command.RegisterRequest, hashedPassword);
+        var checkAdd = await _userRepository.AddUserAsync(command.RegisterRequest, hashedPassword);
 
-        var user = await _userRepository.GetUser(newUser.Id);
+        var user = await _userRepository.GetUserAsync(newUser.Id);
 
-        var mailRequest = new MailRequest
+        var mailRequest = new MailRequestDTO
         {
-            Emailto = user.Email,
-            Subject = "Registration Successful",
-            Message = $"Welcome to Furijat. Dear {user.Name}, thank you for registering"
+            Emailto = user.Email, Subject = "Registration Successful", Message = $"Welcome to Furijat. Dear {user.Name}, thank you for registering"
         };
 
-        var checkEmail = await _mailService.SendMail(mailRequest);
+        var checkEmail = await _mailService.SendMailAsync(mailRequest, MailRequestDTO.UserRegistered);
 
         return true;
     }

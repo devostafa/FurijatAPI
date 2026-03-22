@@ -137,7 +137,7 @@ public static class Seed
             new User
             {
                 Id = Guid.Parse("c0c343f3-a9d0-4ae6-93e4-0d1923b04e60"),
-                Username = "testuser1",
+                Name = "testuser1",
                 Hashedpassword = passwordHash.CreateHashedPassword("1234"),
                 Usertype = "user",
                 PhoneNumber = 123456789,
@@ -150,7 +150,7 @@ public static class Seed
             new User
             {
                 Id = Guid.Parse("913eedbd-a304-478e-beee-4c8db66bd86a"),
-                Username = "testuser2",
+                Name = "testuser2",
                 Hashedpassword = passwordHash.CreateHashedPassword("1234"),
                 Usertype = "user",
                 PhoneNumber = 123456789,
@@ -163,7 +163,7 @@ public static class Seed
             new User
             {
                 Id = Guid.Parse("2e445054-8f22-4812-adb7-38cd849c976b"),
-                Username = "testuser3",
+                Name = "testuser3",
                 Hashedpassword = passwordHash.CreateHashedPassword("1234"),
                 Usertype = "user",
                 PhoneNumber = 123456789,
@@ -176,7 +176,7 @@ public static class Seed
             new User
             {
                 Id = Guid.Parse("a5379337-e6a4-4222-aa88-233358bda6e9"),
-                Username = "testuser4",
+                Name = "testuser4",
                 Hashedpassword = passwordHash.CreateHashedPassword("1234"),
                 Usertype = "user",
                 PhoneNumber = 123456789,
@@ -189,7 +189,7 @@ public static class Seed
             new User
             {
                 Id = Guid.Parse("9bdfe044-4b02-40a7-ade7-4570e68af19c"),
-                Username = "testuser5",
+                Name = "testuser5",
                 Hashedpassword = passwordHash.CreateHashedPassword("1234"),
                 Usertype = "user",
                 PhoneNumber = 123456789,
@@ -202,7 +202,7 @@ public static class Seed
             new User
             {
                 Id = Guid.Parse("c8b590f1-c920-4c1b-9237-852bc0b43518"),
-                Username = "testadmin",
+                Name = "testadmin",
                 Hashedpassword = passwordHash.CreateHashedPassword("1234"),
                 Usertype = "admin",
                 PhoneNumber = 123456789,

@@ -15,7 +15,7 @@ public class GetUserHandler : IQueryHandler<GetUserQuery, UserDTO>
 
     public async Task<UserDTO> HandleAsync(GetUserQuery query, CancellationToken ct = default)
     {
-        var userResult = await _userRepository.GetUser(query.UserID);
+        var userResult = await _userRepository.GetUserAsync(query.UserID);
 
         return userResult;
     }

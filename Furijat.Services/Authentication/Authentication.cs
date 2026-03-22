@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Furijat.Data.DTOs;
 using Furijat.Data.DTOs.RequestDTO;
-using Furijat.Data.Models;
 using Furijat.Data.Repositories.UsersRepository;
 using Furijat.Data.Services.PasswordHash;
 using Furijat.Services.Jwt;
@@ -31,14 +30,14 @@ public class Authentication : IAuthentication
     {
         var token = "";
 
-        var checkuser = await _usersRepo.CheckUser(loginreq.Username);
+        var checkuser = await _usersRepo.CheckUserExistsAsync(loginreq.Username);
 
         if (!checkuser)
         {
             return "username / password are wrong";
         }
 
-        var loginuser = await _usersRepo.GetUserByName(loginreq.Username);
+        var loginuser = await _usersRepo.GetUserByNameAsync(loginreq.Username);
         var userjwtreq = _mapper.Map<JWTRequestDTO>(loginuser);
         var checkpassword = await VerifyPassword(loginreq.Password, loginuser.Hashedpassword);
 
@@ -65,7 +64,7 @@ public class Authentication : IAuthentication
         var hashedpassword = _passwordHashService.CreateHashedPassword(registerreq.Password);
 
 
-        var successfulAdd = await _usersRepo.AddUser(newUserDto, hashedpassword);
+        var successfulAdd = await _usersRepo.AddUserAsync(newUserDto, hashedpassword);
 
         if (successfulAdd)
         {
@@ -96,12 +95,12 @@ public class Authentication : IAuthentication
 
     private async Task<bool> CheckUser(string username)
     {
-        return await _usersRepo.CheckUser(username);
+        return await _usersRepo.CheckUserExistsAsync(username);
     }
 
     private async Task MailSuccessfulRegistration(RegisterRequestDTO registerRequest)
     {
-        var successfulRegistrationNotify = new MailRequest
+        var successfulRegistrationNotify = new MailRequestDTO
         {
             Emailto = registerRequest.Email,
             Subject = "Welcome to FundHub",

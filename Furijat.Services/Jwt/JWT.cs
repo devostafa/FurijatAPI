@@ -24,7 +24,7 @@ public class JWT : IJWT
     {
         List<Claim> claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, jwtRequest.username), new Claim(ClaimTypes.Role, jwtRequest.userType)
+            new Claim("user_id", jwtRequest.UserId), new Claim(ClaimTypes.Role, jwtRequest.UserType.ToString())
         };
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);

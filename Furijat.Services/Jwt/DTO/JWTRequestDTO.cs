@@ -1,7 +1,9 @@
-﻿namespace Furijat.Services.Jwt.DTO;
+﻿using Furijat.Data.Enums;
+
+namespace Furijat.Services.Jwt.DTO;
 
 public class JWTRequestDTO
 {
-    public Guid Id { get; set; }
-    public string username { get; set; }
+    public string UserId { get; set; }
+    public UserTypeEnum UserType { get; set; }
 }

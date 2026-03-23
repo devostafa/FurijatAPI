@@ -26,7 +26,7 @@ public class Authentication : IAuthentication
         _mailService = mailService;
     }
 
-    public async Task<string> Login(LoginRequestDTO loginreq)
+    public async Task<string> LoginAsync(LoginRequestDTO loginreq)
     {
         var token = "";
 
@@ -37,13 +37,15 @@ public class Authentication : IAuthentication
             return "username / password are wrong";
         }
 
-        var loginuser = await _usersRepo.GetUserByNameAsync(loginreq.Username);
-        var userjwtreq = _mapper.Map<JWTRequestDTO>(loginuser);
-        var checkpassword = await VerifyPassword(loginreq.Password, loginuser.Hashedpassword);
+        var user = await _usersRepo.GetUserByNameAsync(loginreq.Username);
 
-        if (checkpassword)
+        var jwtRequest = new JWTRequestDTO(user.Id.ToString(), user.Usertype);
+
+        var verifyPasswordResult = await VerifyPassword(loginreq.Password, user.Hashedpassword);
+
+        if (verifyPasswordResult)
         {
-            token = _jwtService.CreateToken(userjwtreq);
+            token = _jwtService.CreateToken(jwtRequest);
             return token;
         }
 
@@ -51,7 +53,7 @@ public class Authentication : IAuthentication
     }
 
 
-    public async Task<bool> Register(RegisterRequestDTO registerreq)
+    public async Task<bool> RegisterAsync(RegisterRequestDTO registerreq)
     {
         if (await CheckUser(registerreq.Username))
         {

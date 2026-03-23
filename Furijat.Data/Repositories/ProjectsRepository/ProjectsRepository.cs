@@ -1,5 +1,6 @@
 ﻿using Furijat.Data.DTOs.RequestDTO;
 using Furijat.Data.DTOs.ResponseDTO;
+using Furijat.Data.Enums;
 using Furijat.Data.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -22,12 +23,10 @@ public class ProjectsRepository : IProjectsRepository
         _hostenv = hostenv;
     }
 
-    /*
-    public async Task<List<Project>> GetProjectsOfCategory(string categoryid)
+    public async Task<List<ProjectResponseDTO>> GetProjectsAsync(string? categoryId)
     {
-        return await _db.Projects.Where(x => x.Category.Id == Guid.Parse(categoryid)).ToListAsync();
+        return await _db.Projects.ProjectTo<ProjectResponseDTO>(_mapper.ConfigurationProvider).ToListAsync();
     }
-    */
 
     public async Task<ProjectResponseDTO> GetProjectAsync(string projectid)
     {
@@ -35,12 +34,12 @@ public class ProjectsRepository : IProjectsRepository
             .FirstAsync(p => p.Id == Guid.Parse(projectid));
     }
 
-    public async Task<bool> AddProjectAsync(ProjectRequestDTO projecttoadd)
+    public async Task<bool> AddProjectAsync(ProjectRequestDTO newProjectRequest)
     {
-        var newproject = _mapper.Map<Project>(projecttoadd);
+        var newproject = _mapper.Map<Project>(newProjectRequest);
         Directory.CreateDirectory(Path.Combine(_hostenv.ContentRootPath, "Storage", "Projects", $"{newproject.Id}", "Images"));
 
-        foreach (var imagefile in projecttoadd.ImagesFiles)
+        foreach (var imagefile in newProjectRequest.ImagesFiles)
         {
             var checkimg = await AddProjectImage(newproject.Id.ToString(), imagefile);
             if (checkimg) newproject.ImageNames.Append(imagefile.FileName);
@@ -51,19 +50,19 @@ public class ProjectsRepository : IProjectsRepository
         return true;
     }
 
-    public async Task<bool> UpdateProjectAsync(ProjectRequestDTO projecttoupdate)
+    public async Task<bool> UpdateProjectAsync(ProjectRequestDTO projectUpdateRequest)
     {
-        var selectedproject = await _db.Projects.FirstAsync(p => p.Id == projecttoupdate.Id);
-        selectedproject = _mapper.Map<Project>(projecttoupdate);
+        var project = await _db.Projects.FirstAsync(p => p.Id == projectUpdateRequest.Id);
+        project = _mapper.Map<Project>(projectUpdateRequest);
 
         //check images names and files
-        foreach (var imgfile in projecttoupdate.ImagesFiles)
+        foreach (var imgfile in projectUpdateRequest.ImagesFiles)
         {
             var found = false;
 
-            for (var i = 0; i < selectedproject.ImageNames.Length; i++)
+            for (var i = 0; i < project.ImageNames.Length; i++)
             {
-                if (selectedproject.ImageNames[i] == imgfile.FileName)
+                if (project.ImageNames[i] == imgfile.FileName)
                 {
                     found = true;
                 }
@@ -71,33 +70,41 @@ public class ProjectsRepository : IProjectsRepository
 
             if (!found)
             {
-                var check = await AddProjectImage(selectedproject.Id.ToString(), imgfile);
-                if (check) selectedproject.ImageNames.Append(imgfile.FileName);
+                var check = await AddProjectImage(project.Id.ToString(), imgfile);
+                if (check) project.ImageNames.Append(imgfile.FileName);
             }
         }
 
-        _db.Projects.Update(selectedproject);
+        _db.Projects.Update(project);
         await _db.SaveChangesAsync();
         return true;
     }
 
-    public async Task<bool> RemoveProjectAsync(string projectid)
+    public async Task<bool> UpdateProjectStatusAsync(string projectId, ProjectStatusEnum statusUpdate)
     {
-        var selectedproject = await _db.Projects.FindAsync(Guid.Parse(projectid));
+        var project = await _db.Projects.FirstAsync(p => p.Id == Guid.Parse(projectId));
 
-        if (selectedproject != null)
+        project.Status = statusUpdate;
+
+        _db.Projects.Update(project);
+
+        await _db.SaveChangesAsync();
+
+        return true;
+    }
+
+    public async Task<bool> RemoveProjectAsync(string projectId)
+    {
+        var project = await _db.Projects.FindAsync(Guid.Parse(projectId));
+
+        if (project != null)
         {
-            EntityEntry<Project> check = _db.Projects.Remove(selectedproject);
+            EntityEntry<Project> check = _db.Projects.Remove(project);
             await _db.SaveChangesAsync();
             return true;
         }
 
-        if (selectedproject == null)
-        {
-            return true;
-        }
-
-        return false;
+        return project == null;
     }
 
 
@@ -105,9 +112,9 @@ public class ProjectsRepository : IProjectsRepository
     {
         try
         {
-            List<Project> allprojects = await _db.Projects.ToListAsync();
+            List<Project> allProjects = await _db.Projects.ToListAsync();
 
-            foreach (var project in allprojects)
+            foreach (var project in allProjects)
             {
                 var productfoldertocreate = Path.Combine(_hostenv.ContentRootPath, "Storage", "Projects",
                     $"{project.Id}", "Images");
@@ -116,21 +123,12 @@ public class ProjectsRepository : IProjectsRepository
 
             Console.WriteLine("Created Products assets folders successfully");
         }
-        catch (Exception err)
+        catch (Exception ex)
         {
-            throw err;
+            throw new ApplicationException("Failed to create projects folders", ex);
         }
     }
 
-    public async Task<List<ProjectResponseDTO>> GetProjects()
-    {
-        return await _db.Projects.ProjectTo<ProjectResponseDTO>(_mapper.ConfigurationProvider).ToListAsync();
-    }
-
-    public async Task<Project> GetProjectDirect(string projectId)
-    {
-        return await _db.Projects.Include(p => p.User).FirstAsync(p => p.Id == Guid.Parse(projectId));
-    }
 
     private async Task<bool> AddProjectImage(string projectid, IFormFile imgfile)
     {

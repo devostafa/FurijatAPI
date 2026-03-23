@@ -23,13 +23,13 @@ public class AuthenticationController : BaseController
     [Produces("application/json")]
     public async Task<string?> Login(LoginRequestDTO loginrequest)
     {
-        return await _auth.Login(loginrequest);
+        return await _auth.LoginAsync(loginrequest);
     }
 
     [HttpPost("register")]
     public async Task<bool> Register(RegisterRequestDTO registerrequest)
     {
-        return await _auth.Register(registerrequest);
+        return await _auth.RegisterAsync(registerrequest);
     }
 
     [Authorize]

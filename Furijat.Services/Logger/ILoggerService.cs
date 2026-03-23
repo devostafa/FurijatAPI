@@ -4,5 +4,5 @@ public interface ILoggerService
 {
     public void Log(string message);
 
-    public void Error(string message);
+    public void Error(string message, Exception ex);
 }

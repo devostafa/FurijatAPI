@@ -2,8 +2,4 @@
 
 namespace Furijat.Services.Jwt.DTO;
 
-public class JWTRequestDTO
-{
-    public string UserId { get; set; }
-    public UserTypeEnum UserType { get; set; }
-}
+public record JWTRequestDTO(string UserId, UserTypeEnum UserType);

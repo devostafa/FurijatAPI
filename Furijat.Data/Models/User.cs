@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Furijat.Data.Enums;
 
 namespace Furijat.Data.Models;
 
@@ -7,7 +8,7 @@ public class User
     [Key] public Guid Id { get; set; }
     public string Name { get; set; }
     public string Hashedpassword { get; set; }
-    public string Usertype { get; set; }
+    public UserTypeEnum Usertype { get; set; }
     public int PhoneNumber { get; set; }
     public string Email { get; set; }
     public string? Facebook { get; set; }

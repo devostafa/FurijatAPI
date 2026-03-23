@@ -10,9 +10,10 @@ builder.Services.AddControllers().AddJsonOptions(options => { options.JsonSerial
 builder.Services.AddServices();
 builder.Services.AddDatabaseServices();
 builder.Services.AddSecurityServices(builder.Configuration);
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
 var app = builder.Build();
 

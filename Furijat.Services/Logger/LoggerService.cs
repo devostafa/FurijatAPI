@@ -16,8 +16,8 @@ public class LoggerService : ILoggerService
         _logger.LogInformation("{ DateTime.UtcNow}: {Message}", DateTime.UtcNow, message);
     }
 
-    public void Error(string message)
+    public void Error(string message, Exception ex)
     {
-        _logger.LogError("{ DateTime.UtcNow}: {Message}", DateTime.UtcNow, message);
+        _logger.LogError(ex, "{ DateTime.UtcNow}: {Message}", DateTime.UtcNow, message);
     }
 }

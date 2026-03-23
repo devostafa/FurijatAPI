@@ -1,5 +1,6 @@
 ﻿using Furijat.Data.DTOs.RequestDTO;
 using Furijat.Data.DTOs.ResponseDTO;
+using Furijat.Data.Enums;
 
 namespace Furijat.Data.Repositories.ProjectsRepository;
 
@@ -9,9 +10,11 @@ public interface IProjectsRepository
 
     public Task<ProjectResponseDTO> GetProjectAsync(string projectId);
 
-    public Task<bool> AddProjectAsync(ProjectRequestDTO requestDto);
+    public Task<bool> AddProjectAsync(ProjectRequestDTO newProjectRequest);
 
-    public Task<bool> UpdateProjectAsync(ProjectRequestDTO requestDto);
+    public Task<bool> UpdateProjectAsync(ProjectRequestDTO projectUpdateRequest);
+    
+    public Task<bool> UpdateProjectStatusAsync(string projectId, ProjectStatusEnum statusUpdate);
 
     public Task<bool> RemoveProjectAsync(string projectId);
 

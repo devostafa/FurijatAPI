@@ -5,7 +5,7 @@ namespace Furijat.Data.DTOs.RequestDTO;
 
 public class MailRequestDTO
 {
-    private MailRequestTypeEnum MailType { get; set; }
+    public MailRequestTypeEnum MailType { get; set; }
     public string Emailto { get; set; }
     public string Subject { get; set; }
     public string Message { get; set; }

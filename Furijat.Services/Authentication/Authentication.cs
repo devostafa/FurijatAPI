@@ -55,13 +55,13 @@ public class Authentication : IAuthentication
 
     public async Task<bool> RegisterAsync(RegisterRequestDTO registerreq)
     {
-        if (await CheckUser(registerreq.Username))
+        if (await CheckUser(registerreq.Name))
         {
             return false;
         }
 
 
-        var newUserDto = _mapper.Map<UserToAddDTO>(registerreq);
+        var newUserDto = _mapper.Map<NewUserRequestDTO>(registerreq);
 
         var hashedpassword = _passwordHashService.CreateHashedPassword(registerreq.Password);
 
@@ -106,7 +106,7 @@ public class Authentication : IAuthentication
         {
             Emailto = registerRequest.Email,
             Subject = "Welcome to FundHub",
-            Message = $"Dear {registerRequest.Username}, thank you for registering on FundHub\\n" +
+            Message = $"Dear {registerRequest.Name}, thank you for registering on FundHub\\n" +
                       $"We hope you enjoy the platform and support your community of people who wish to achieve their dreams and ideas"
         };
         await _mailService.SendMail(successfulRegistrationNotify);

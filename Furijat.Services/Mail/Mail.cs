@@ -1,5 +1,4 @@
 ﻿using Furijat.Data.DTOs.RequestDTO;
-using Furijat.Data.Enums;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Configuration;
@@ -19,7 +18,7 @@ public class Mail : IMail
         _emailSettings = _config.GetSection("EmailSettings");
     }
 
-    public async Task<bool> SendMailAsync(MailRequestDTO mailRequestDTO, MailRequestTypeEnum mailType)
+    public async Task<bool> SendMailAsync(MailRequestDTO mailRequestDTO)
     {
         try
         {
@@ -50,7 +49,7 @@ public class Mail : IMail
 
             var client = new SmtpClient();
             await client.ConnectAsync(_emailSettings["SmtpServer"], short.Parse(_emailSettings["Port"]), SecureSocketOptions.StartTls);
-            await client.AuthenticateAsync(_emailSettings["CompanyMail"], _emailSettings["CompanyPassword"]);
+            await client.AuthenticateAsync(_emailSettings["Owner"], _emailSettings["OwnerPassword"]);
             await client.SendAsync(message);
 
             await client.DisconnectAsync(true);

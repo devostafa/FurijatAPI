@@ -1,8 +1,3 @@
 ﻿namespace Furijat.Data.DTOs.RequestDTO;
 
-public record RegisterRequestDTO
-{
-    public string Username { get; init; }
-    public string Email { get; init; }
-    public string Password { get; init; }
-}
+public record RegisterRequestDTO(string Name, string Password, string Email, string PhoneNumber);

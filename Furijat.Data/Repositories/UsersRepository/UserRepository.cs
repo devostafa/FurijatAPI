@@ -1,4 +1,6 @@
 ﻿using Furijat.Data.DTOs;
+using Furijat.Data.DTOs.RequestDTO;
+using Furijat.Data.Enums;
 using Furijat.Data.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -18,10 +20,10 @@ public class UserRepository : IUserRepository
         _webHostEnv = webHostEnv;
     }
 
-    public async Task<UserDTO> GetUserAsync(string userid)
+    public async Task<UserDTO> GetUserAsync(string userId)
     {
         return await _db.Users.Include(u => u.Project).ProjectTo<UserDTO>(_mapper.ConfigurationProvider)
-            .FirstAsync(u => u.Id == Guid.Parse(userid));
+            .FirstAsync(u => u.Id == Guid.Parse(userId));
     }
 
     public async Task<User> GetUserByNameAsync(string username)
@@ -29,9 +31,9 @@ public class UserRepository : IUserRepository
         return await _db.Users.FirstAsync(u => u.Name == username);
     }
 
-    public async Task<bool> CheckUserExistsAsync(string username)
+    public async Task<bool> CheckUserExistsAsync(string userName)
     {
-        return await _db.Users.AnyAsync(u => u.Name == username);
+        return await _db.Users.AnyAsync(u => u.Name == userName);
     }
 
     public async Task<List<UserDTO>> GetUersAsync()
@@ -39,9 +41,28 @@ public class UserRepository : IUserRepository
         return await _db.Users.Include(u => u.Project).ProjectTo<UserDTO>(_mapper.ConfigurationProvider).ToListAsync();
     }
 
-    public async Task<bool> AddUserAsync(UserToAddDTO newUser, string hashedPassword)
+    public async Task<string> AddUserAsync(RegisterRequestDTO newUserRequest, string hashedPassword)
     {
-        throw new NotImplementedException();
+        var newUser = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = newUserRequest.Name,
+            Hashedpassword = hashedPassword,
+            Usertype = UserTypeEnum.User,
+            PhoneNumber = newUserRequest.PhoneNumber,
+            Email = newUserRequest.Email,
+            Facebook = null,
+            X = null,
+            Instagram = null,
+            Profileimage = null,
+            Project = null
+        };
+
+        await _db.Users.AddAsync(newUser);
+
+        await _db.SaveChangesAsync();
+
+        return newUser.Id.ToString();
     }
 
     public async Task<bool> UpdateUserAsync(UserDTO usertoupdate)
@@ -93,7 +114,7 @@ public class UserRepository : IUserRepository
         return await _db.Users.FirstAsync(u => u.Id == Guid.Parse(userid));
     }
 
-    public async Task<bool> AddUser(UserToAddDTO usertoadd)
+    public async Task<bool> AddUser(NewUserRequestDTO usertoadd)
     {
         var newUser = _mapper.Map<User>(usertoadd);
         await _db.Users.AddAsync(newUser);

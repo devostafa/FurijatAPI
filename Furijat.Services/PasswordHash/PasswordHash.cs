@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace Furijat.Data.Services.PasswordHash;
+namespace Furijat.Services.PasswordHash;
 
 public class PasswordHash : IPasswordHash
 {

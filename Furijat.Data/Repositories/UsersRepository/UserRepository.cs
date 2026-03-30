@@ -1,5 +1,6 @@
 ﻿using Furijat.Data.DTOs;
 using Furijat.Data.DTOs.RequestDTO;
+using Furijat.Data.DTOs.ResponseDTO;
 using Furijat.Data.Enums;
 using Furijat.Data.Models;
 using Microsoft.AspNetCore.Hosting;
@@ -20,9 +21,9 @@ public class UserRepository : IUserRepository
         _webHostEnv = webHostEnv;
     }
 
-    public async Task<UserDTO> GetUserAsync(string userId)
+    public async Task<UserResponseDTO> GetUserAsync(string userId)
     {
-        return await _db.Users.Include(u => u.Project).ProjectTo<UserDTO>(_mapper.ConfigurationProvider)
+        return await _db.Users.Include(u => u.Project).ProjectTo<UserResponseDTO>(_mapper.ConfigurationProvider)
             .FirstAsync(u => u.Id == Guid.Parse(userId));
     }
 
@@ -36,9 +37,9 @@ public class UserRepository : IUserRepository
         return await _db.Users.AnyAsync(u => u.Name == userName);
     }
 
-    public async Task<List<UserDTO>> GetUersAsync()
+    public async Task<List<UserResponseDTO>> GetUersAsync()
     {
-        return await _db.Users.Include(u => u.Project).ProjectTo<UserDTO>(_mapper.ConfigurationProvider).ToListAsync();
+        return await _db.Users.Include(u => u.Project).ProjectTo<UserResponseDTO>(_mapper.ConfigurationProvider).ToListAsync();
     }
 
     public async Task<string> AddUserAsync(RegisterRequestDTO newUserRequest, string hashedPassword)
@@ -65,7 +66,7 @@ public class UserRepository : IUserRepository
         return newUser.Id.ToString();
     }
 
-    public async Task<bool> UpdateUserAsync(UserDTO usertoupdate)
+    public async Task<bool> UpdateUserAsync(UserResponseDTO usertoupdate)
     {
         var query = await _db.Users.Include(u => u.Project).FirstAsync(u => u.Id == usertoupdate.Id);
         query = _mapper.Map<User>(usertoupdate);

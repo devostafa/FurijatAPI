@@ -1,8 +1,6 @@
-﻿using Furijat.Data.DTOs.ResponseDTO;
-using Furijat.Data.Enums;
-using Furijat.Data.Models;
+﻿using Furijat.Data.Enums;
 
-namespace Furijat.Data.DTOs;
+namespace Furijat.Data.DTOs.ResponseDTO;
 
 public record UserResponseDTO(
     Guid Id,

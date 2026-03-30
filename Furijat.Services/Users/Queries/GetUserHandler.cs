@@ -1,10 +1,11 @@
 ﻿using Furijat.Data.DTOs;
+using Furijat.Data.DTOs.ResponseDTO;
 using Furijat.Data.Repositories.UsersRepository;
 using Furijat.Services.Base.Queries;
 
 namespace Furijat.Services.Users.Queries;
 
-public class GetUserHandler : IQueryHandler<GetUserQuery, UserDTO>
+public class GetUserHandler : IQueryHandler<GetUserQuery, UserResponseDTO>
 {
     private readonly IUserRepository _userRepository;
 
@@ -13,7 +14,7 @@ public class GetUserHandler : IQueryHandler<GetUserQuery, UserDTO>
         _userRepository = userRepository;
     }
 
-    public async Task<UserDTO> HandleAsync(GetUserQuery query, CancellationToken ct = default)
+    public async Task<UserResponseDTO> HandleAsync(GetUserQuery query, CancellationToken ct = default)
     {
         var userResult = await _userRepository.GetUserAsync(query.UserID);
 

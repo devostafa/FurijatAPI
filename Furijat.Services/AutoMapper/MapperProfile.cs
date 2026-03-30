@@ -13,21 +13,21 @@ public class MapperProfile : Profile
     public MapperProfile()
     {
         //model to DTO
-        CreateMap<User, UserDTO>();
+        CreateMap<User, UserResponseDTO>();
         CreateMap<Project, ProjectResponseDTO>();
         CreateMap<Data.Models.Donation, DonationResponseDTO>();
         CreateMap<BlogArticle, BlogArticleResponseDTO>();
         CreateMap<User, JWTRequestDTO>();
-        CreateMap<RegisterRequestDTO, UserDTO>();
+        CreateMap<RegisterRequestDTO, UserResponseDTO>();
         CreateMap<Category, CategoryResponseDTO>();
 
         //DTO to Model
         CreateMap<ProjectRequestDTO, Project>();
         CreateMap<DonationRequestDTO, Data.Models.Donation>();
         CreateMap<DonationResponseDTO, Data.Models.Donation>();
-        CreateMap<UserDTO, User>();
+        CreateMap<UserResponseDTO, User>();
 
         //DTO to DTO
-        CreateMap<UserDTO, JWTRequestDTO>();
+        CreateMap<UserResponseDTO, JWTRequestDTO>();
     }
 }

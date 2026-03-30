@@ -1,6 +1,4 @@
 ﻿using Furijat.Data.Models;
-using Furijat.Data.Services.PasswordHash;
-using Furijat.Data.Services.Seed;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -9,12 +7,10 @@ namespace Furijat.Data;
 public class DataContext : DbContext
 {
     private readonly IConfiguration _configEnv;
-    private readonly IPasswordHash _passwordHash;
 
-    public DataContext(IConfiguration configEnv, IPasswordHash passwordHash)
+    public DataContext(IConfiguration configEnv)
     {
         _configEnv = configEnv;
-        _passwordHash = passwordHash;
     }
 
     public DbSet<Project> Projects { get; set; }
@@ -26,10 +22,5 @@ public class DataContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlite(_configEnv.GetConnectionString("DatabaseConnection"));
-    }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        Seed.SeedDatabase(modelBuilder, _passwordHash); // Runs during bootup, better than at runtime
     }
 }

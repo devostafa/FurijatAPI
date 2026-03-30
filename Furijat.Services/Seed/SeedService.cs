@@ -1,14 +1,15 @@
-﻿using Furijat.Data.Models;
-using Furijat.Data.Services.PasswordHash;
-using Microsoft.EntityFrameworkCore;
+﻿using Furijat.Data;
+using Furijat.Data.Enums;
+using Furijat.Data.Models;
+using Furijat.Services.PasswordHash;
 
-namespace Furijat.Data.Services.Seed;
+namespace Furijat.Services.Seed;
 
-public static class Seed
+public static class SeedService
 {
-    public static void SeedDatabase(ModelBuilder modelBuilder, IPasswordHash passwordHash)
+    public static void SeedDatabase(DataContext dbContext, IPasswordHash passwordHash)
     {
-        modelBuilder.Entity<BlogArticle>().HasData(
+        dbContext.modelBuilder.Entity<BlogArticle>().HasData(
             new BlogArticle
             {
                 Id = Guid.Parse("0f97ea1d-e247-4cf5-a6d9-5f9d3265e220"),
@@ -16,7 +17,7 @@ public static class Seed
                 Subtitle = "",
                 Description = "Desc Test",
                 Published = new DateOnly(2024, 1, 1),
-                Imagecovername = "newscover.jpg"
+                Imagecovername = "cover.jpg"
             },
             new BlogArticle
             {
@@ -25,7 +26,7 @@ public static class Seed
                 Subtitle = "",
                 Description = "Desc Test",
                 Published = new DateOnly(2024, 1, 1),
-                Imagecovername = "newscover.jpg"
+                Imagecovername = "cover.jpg"
             },
             new BlogArticle
             {
@@ -34,7 +35,7 @@ public static class Seed
                 Subtitle = "",
                 Description = "Desc Test",
                 Published = new DateOnly(2024, 1, 1),
-                Imagecovername = "newscover.jpg"
+                Imagecovername = "cover.jpg"
             },
             new BlogArticle
             {
@@ -43,7 +44,7 @@ public static class Seed
                 Subtitle = "",
                 Description = "Desc Test",
                 Published = new DateOnly(2024, 1, 1),
-                Imagecovername = "newscover.jpg"
+                Imagecovername = "cover.jpg"
             }
         );
 
@@ -139,8 +140,8 @@ public static class Seed
                 Id = Guid.Parse("c0c343f3-a9d0-4ae6-93e4-0d1923b04e60"),
                 Name = "testuser1",
                 Hashedpassword = passwordHash.CreateHashedPassword("1234"),
-                Usertype = "user",
-                PhoneNumber = 123456789,
+                Usertype = UserTypeEnum.User,
+                PhoneNumber = "123456789",
                 Email = "test@gmail.com",
                 Facebook = "",
                 Instagram = "",
@@ -152,8 +153,8 @@ public static class Seed
                 Id = Guid.Parse("913eedbd-a304-478e-beee-4c8db66bd86a"),
                 Name = "testuser2",
                 Hashedpassword = passwordHash.CreateHashedPassword("1234"),
-                Usertype = "user",
-                PhoneNumber = 123456789,
+                Usertype = UserTypeEnum.User,
+                PhoneNumber = "123456789",
                 Email = "test@gmail.com",
                 Facebook = "",
                 Instagram = "",
@@ -165,8 +166,8 @@ public static class Seed
                 Id = Guid.Parse("2e445054-8f22-4812-adb7-38cd849c976b"),
                 Name = "testuser3",
                 Hashedpassword = passwordHash.CreateHashedPassword("1234"),
-                Usertype = "user",
-                PhoneNumber = 123456789,
+                Usertype = UserTypeEnum.User,
+                PhoneNumber = "123456789",
                 Email = "test@gmail.com",
                 Facebook = "",
                 Instagram = "",
@@ -178,8 +179,8 @@ public static class Seed
                 Id = Guid.Parse("a5379337-e6a4-4222-aa88-233358bda6e9"),
                 Name = "testuser4",
                 Hashedpassword = passwordHash.CreateHashedPassword("1234"),
-                Usertype = "user",
-                PhoneNumber = 123456789,
+                Usertype = UserTypeEnum.User,
+                PhoneNumber = "123456789",
                 Email = "test@gmail.com",
                 Facebook = "",
                 Instagram = "",
@@ -191,8 +192,8 @@ public static class Seed
                 Id = Guid.Parse("9bdfe044-4b02-40a7-ade7-4570e68af19c"),
                 Name = "testuser5",
                 Hashedpassword = passwordHash.CreateHashedPassword("1234"),
-                Usertype = "user",
-                PhoneNumber = 123456789,
+                Usertype = UserTypeEnum.User,
+                PhoneNumber = "123456789",
                 Email = "test@gmail.com",
                 Facebook = "",
                 Instagram = "",
@@ -204,8 +205,8 @@ public static class Seed
                 Id = Guid.Parse("c8b590f1-c920-4c1b-9237-852bc0b43518"),
                 Name = "testadmin",
                 Hashedpassword = passwordHash.CreateHashedPassword("1234"),
-                Usertype = "admin",
-                PhoneNumber = 123456789,
+                Usertype = UserTypeEnum.User,
+                PhoneNumber = "123456789",
                 Email = "test@gmail.com",
                 Facebook = "",
                 Instagram = "",

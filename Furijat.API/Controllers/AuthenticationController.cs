@@ -1,5 +1,5 @@
-﻿using Furijat.Data.DTOs;
-using Furijat.Data.DTOs.RequestDTO;
+﻿using Furijat.Data.DTOs.RequestDTO;
+using Furijat.Data.DTOs.ResponseDTO;
 using Furijat.Data.Repositories.UsersRepository;
 using Furijat.Services.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -34,9 +34,12 @@ public class AuthenticationController : BaseController
 
     [Authorize]
     [HttpGet("user")]
-    public async Task<UserDTO> GetUserInfo()
+    public async Task<UserResponseDTO?> GetUserInfo()
     {
-        var userid = HttpContext.User.FindFirst("userid").Value;
-        return await _useRepo.GetUserAsync(userid);
+        var userId = HttpContext.User.FindFirst("userid").Value;
+
+        if (userId == null) return null;
+
+        return await _useRepo.GetUserAsync(userId);
     }
 }

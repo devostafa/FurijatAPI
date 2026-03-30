@@ -1,12 +1,12 @@
 ﻿using System.Text;
 using Furijat.Data;
-using Furijat.Data.Services.PasswordHash;
 using Furijat.Services.Authentication;
 using Furijat.Services.AutoMapper;
 using Furijat.Services.Base.Commands;
 using Furijat.Services.Donation;
 using Furijat.Services.Jwt;
 using Furijat.Services.Mail;
+using Furijat.Services.PasswordHash;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -19,7 +19,7 @@ public static class ServicesRegisterExtension
     public static void AddServices(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddHttpContextAccessor();
-        serviceCollection.AddScoped<IPasswordHash, PasswordHash>();
+        serviceCollection.AddScoped<IPasswordHash, PasswordHash.PasswordHash>();
         serviceCollection.AddScoped<IAuthentication, Authentication.Authentication>();
         serviceCollection.AddScoped<IJWT, Jwt.JWT>();
         serviceCollection.AddScoped<IDonationService, DonationService>();

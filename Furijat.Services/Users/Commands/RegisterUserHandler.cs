@@ -1,9 +1,9 @@
 ﻿using Furijat.Data.DTOs.RequestDTO;
 using Furijat.Data.Enums;
 using Furijat.Data.Repositories.UsersRepository;
-using Furijat.Data.Services.PasswordHash;
 using Furijat.Services.Base.Commands;
 using Furijat.Services.Mail;
+using Furijat.Services.PasswordHash;
 
 namespace Furijat.Services.Users.Commands;
 

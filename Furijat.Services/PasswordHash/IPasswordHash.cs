@@ -1,4 +1,4 @@
-﻿namespace Furijat.Data.Services.PasswordHash;
+﻿namespace Furijat.Services.PasswordHash;
 
 public interface IPasswordHash
 {

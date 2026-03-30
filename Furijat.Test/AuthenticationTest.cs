@@ -16,7 +16,7 @@ public class AuthenticationTest
     {
         var loginDto = new LoginRequestDTO
         {
-            Username = "testuser", Password = "1234"
+            Email = "testuser", Password = "1234"
         };
         var jsonloginrequest = JsonConvert.SerializeObject(loginDto);
 

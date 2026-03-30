@@ -3,16 +3,11 @@ using Furijat.Data.Enums;
 
 namespace Furijat.Data.DTOs.RequestDTO;
 
-public class MailRequestDTO
-{
-    public MailRequestTypeEnum MailType { get; set; }
-    public string Emailto { get; set; }
-    public string Subject { get; set; }
-    public string Message { get; set; }
-
-    public UserDTO? User { get; set; }
-
-    public ProjectResponseDTO? Project { get; set; }
-
-    public DonationResponseDTO? Donation { get; set; }
-}
+public class MailRequestDTO(
+    MailRequestTypeEnum MailType,
+    string Emailto,
+    string Subject,
+    string? CustomMessage,
+    UserResponseDTO? User,
+    ProjectResponseDTO? Project,
+    DonationResponseDTO? Donation);

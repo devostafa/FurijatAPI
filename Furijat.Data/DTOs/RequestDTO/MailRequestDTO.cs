@@ -3,9 +3,9 @@ using Furijat.Data.Enums;
 
 namespace Furijat.Data.DTOs.RequestDTO;
 
-public class MailRequestDTO(
+public record MailRequestDTO(
     MailRequestTypeEnum MailType,
-    string Emailto,
+    string EmailTo,
     string Subject,
     string? CustomMessage,
     UserResponseDTO? User,

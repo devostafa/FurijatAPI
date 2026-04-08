@@ -1,24 +1,38 @@
 ﻿using Furijat.Data.DTOs.ResponseDTO;
+using Furijat.Data.Models;
 using Microsoft.AspNetCore.Hosting;
 
 namespace Furijat.Data.Repositories.CategoriesRepository;
 
 public class CategoryRepository : ICategoryRepository
 {
-    private readonly DataContext _db;
-    private readonly IWebHostEnvironment _hostenv;
+    private readonly DataContext _dbContext;
     private readonly IMapper _mapper;
+    private readonly IWebHostEnvironment _webHostEnv;
 
-    public CategoryRepository(DataContext db, IMapper mapper, IWebHostEnvironment hostingEnvironment)
+    public CategoryRepository(DataContext dbContext, IMapper mapper, IWebHostEnvironment webHostEnv)
     {
-        _db = db;
+        _dbContext = dbContext;
         _mapper = mapper;
-        _hostenv = hostingEnvironment;
+        _webHostEnv = webHostEnv;
     }
-
 
     public async Task<List<CategoryResponseDTO>> GetCategories()
     {
-        return await _db.Categories.ProjectTo<CategoryResponseDTO>(_mapper.ConfigurationProvider).ToListAsync();
+        return await _dbContext.Categories.ProjectTo<CategoryResponseDTO>(_mapper.ConfigurationProvider).ToListAsync();
+    }
+
+    public async Task<bool> AddCategoryAsync(string categoryName)
+    {
+        var newCategory = new Category
+        {
+            Id = Guid.NewGuid(), Name = categoryName
+        };
+
+        await _dbContext.Categories.AddAsync(newCategory);
+
+        await _dbContext.SaveChangesAsync();
+
+        return true;
     }
 }

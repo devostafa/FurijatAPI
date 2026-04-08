@@ -24,7 +24,7 @@ public class Mail : IMail
         {
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(_emailSettings["SenderName"], _emailSettings["SenderEmail"]));
-            message.To.Add(new MailboxAddress("", mailRequestDTO.Emailto));
+            message.To.Add(new MailboxAddress("", mailRequestDTO.EmailTo));
             message.Subject = mailRequestDTO.Subject;
 
             var bannerImagePath = Path.Combine(_config["ContentRootPath"], "Storage", "Images", "mailBanner.png");
@@ -42,7 +42,7 @@ public class Mail : IMail
                         <div style="text-align:center;">
                             <img src='cid:{bannerImage.ContentId}' alt='logo' width='100' height='100' style="display:inline-block;">
                             <h1>{message.Subject}</h1>
-                            <p>{mailRequestDTO.Message}</p>
+                            <p>{mailRequestDTO.CustomMessage}</p>
                         </div>
                         """
             };

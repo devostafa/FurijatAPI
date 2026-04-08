@@ -31,9 +31,9 @@ public class RegisterUserHandler : ICommandHandler<RegisterUserCommand, bool>
         var mailRequest = new MailRequestDTO
         {
             MailType = MailRequestTypeEnum.NewUserRegistered,
-            Emailto = user.Email,
+            EmailTo = user.Email,
             Subject = "Registration Successful",
-            Message = $"Welcome to Furijat. Dear {user.Name}, thank you for registering"
+            CustomMessage = $"Welcome to Furijat. Dear {user.Name}, thank you for registering"
         };
 
         var emailResult = await _mailService.SendMailAsync(mailRequest);

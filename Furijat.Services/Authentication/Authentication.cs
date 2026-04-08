@@ -11,13 +11,13 @@ namespace Furijat.Services.Authentication;
 
 public class Authentication : IAuthentication
 {
-    private readonly IJWT _jwtService;
+    private readonly IJWTService _jwtService;
     private readonly IMail _mailService;
     private readonly IMapper _mapper;
     private readonly IPasswordHash _passwordHashService;
     private readonly IUserRepository _usersRepo;
 
-    public Authentication(IJWT jwtService, IMapper mapper, IPasswordHash passwordHashService, IUserRepository usersRepo, IMail mailService)
+    public Authentication(IJWTService jwtService, IMapper mapper, IPasswordHash passwordHashService, IUserRepository usersRepo, IMail mailService)
     {
         _jwtService = jwtService;
         _mapper = mapper;

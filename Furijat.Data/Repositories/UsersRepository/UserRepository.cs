@@ -1,5 +1,4 @@
-﻿using Furijat.Data.DTOs;
-using Furijat.Data.DTOs.RequestDTO;
+﻿using Furijat.Data.DTOs.RequestDTO;
 using Furijat.Data.DTOs.ResponseDTO;
 using Furijat.Data.Enums;
 using Furijat.Data.Models;
@@ -32,7 +31,7 @@ public class UserRepository : IUserRepository
         return await _db.Users.FirstAsync(u => u.Name == username);
     }
 
-    public async Task<bool> CheckUserExistsAsync(string userName)
+    public async Task<bool> CheckUserExistsAsync(string? id, string? userName, string? email)
     {
         return await _db.Users.AnyAsync(u => u.Name == userName);
     }
@@ -69,9 +68,13 @@ public class UserRepository : IUserRepository
     public async Task<bool> UpdateUserAsync(UserResponseDTO usertoupdate)
     {
         var query = await _db.Users.Include(u => u.Project).FirstAsync(u => u.Id == usertoupdate.Id);
+
         query = _mapper.Map<User>(usertoupdate);
+
         _db.Users.Update(query);
+
         await _db.SaveChangesAsync();
+
         return true;
     }
 
@@ -82,7 +85,9 @@ public class UserRepository : IUserRepository
         if (query != null)
         {
             _db.Users.Remove(query);
+
             await _db.SaveChangesAsync();
+
             return true;
         }
 
@@ -113,13 +118,5 @@ public class UserRepository : IUserRepository
     public async Task<User> GetUserDirect(string userid)
     {
         return await _db.Users.FirstAsync(u => u.Id == Guid.Parse(userid));
-    }
-
-    public async Task<bool> AddUser(NewUserRequestDTO usertoadd)
-    {
-        var newUser = _mapper.Map<User>(usertoadd);
-        await _db.Users.AddAsync(newUser);
-        await _db.SaveChangesAsync();
-        return true;
     }
 }

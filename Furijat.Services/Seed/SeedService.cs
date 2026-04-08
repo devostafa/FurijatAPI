@@ -2,53 +2,110 @@
 using Furijat.Data.Enums;
 using Furijat.Data.Models;
 using Furijat.Services.PasswordHash;
+using Microsoft.EntityFrameworkCore;
 
 namespace Furijat.Services.Seed;
 
 public static class SeedService
 {
-    public static void SeedDatabase(DataContext dbContext, IPasswordHash passwordHash)
+    public static async void SeedDatabase(DataContext dbContext, IPasswordHash passwordHash)
     {
-        dbContext.modelBuilder.Entity<BlogArticle>().HasData(
+        List<User> usersSeedData = new List<User>
+        {
+            new User
+            {
+                Id = Guid.Parse("c0c343f3-a9d0-4ae6-93e4-0d1923b04e60"),
+                Name = "testuser1",
+                Hashedpassword = passwordHash.CreateHashedPassword("1234"),
+                Usertype = UserTypeEnum.User,
+                PhoneNumber = "123456789",
+                Email = "test1@gmail.com",
+                Facebook = "",
+                Instagram = "",
+                X = "",
+                Profileimage = "profile.jpg"
+            },
+            new User
+            {
+                Id = Guid.Parse("913eedbd-a304-478e-beee-4c8db66bd86a"),
+                Name = "testuser2",
+                Hashedpassword = passwordHash.CreateHashedPassword("1234"),
+                Usertype = UserTypeEnum.User,
+                PhoneNumber = "123456789",
+                Email = "test2@gmail.com",
+                Facebook = "",
+                Instagram = "",
+                X = "",
+                Profileimage = "profile.jpg"
+            },
+            new User
+            {
+                Id = Guid.Parse("2e445054-8f22-4812-adb7-38cd849c976b"),
+                Name = "testuser3",
+                Hashedpassword = passwordHash.CreateHashedPassword("1234"),
+                Usertype = UserTypeEnum.User,
+                PhoneNumber = "123456789",
+                Email = "test3@gmail.com",
+                Facebook = "",
+                Instagram = "",
+                X = "",
+                Profileimage = "profile.jpg"
+            },
+            new User
+            {
+                Id = Guid.Parse("a5379337-e6a4-4222-aa88-233358bda6e9"),
+                Name = "testuser4",
+                Hashedpassword = passwordHash.CreateHashedPassword("1234"),
+                Usertype = UserTypeEnum.User,
+                PhoneNumber = "123456789",
+                Email = "test4@gmail.com",
+                Facebook = "",
+                Instagram = "",
+                X = "",
+                Profileimage = "profile.jpg"
+            },
+            new User
+            {
+                Id = Guid.Parse("9bdfe044-4b02-40a7-ade7-4570e68af19c"),
+                Name = "testuser5",
+                Hashedpassword = passwordHash.CreateHashedPassword("1234"),
+                Usertype = UserTypeEnum.User,
+                PhoneNumber = "123456789",
+                Email = "test5@gmail.com",
+                Facebook = "",
+                Instagram = "",
+                X = "",
+                Profileimage = "profile.jpg"
+            },
+            new User
+            {
+                Id = Guid.Parse("c8b590f1-c920-4c1b-9237-852bc0b43518"),
+                Name = "testadmin",
+                Hashedpassword = passwordHash.CreateHashedPassword("1234"),
+                Usertype = UserTypeEnum.User,
+                PhoneNumber = "123456789",
+                Email = "test6@gmail.com",
+                Facebook = "",
+                Instagram = "",
+                X = "",
+                Profileimage = "profile.jpg"
+            }
+        };
+
+        List<BlogArticle> blogArticlesSeedData = new List<BlogArticle>
+        {
             new BlogArticle
             {
                 Id = Guid.Parse("0f97ea1d-e247-4cf5-a6d9-5f9d3265e220"),
                 Title = "Innovative Breakthroughs: College Students Secure Funding for Groundbreaking Projects",
-                Subtitle = "",
-                Description = "Desc Test",
-                Published = new DateOnly(2024, 1, 1),
-                Imagecovername = "cover.jpg"
-            },
-            new BlogArticle
-            {
-                Id = Guid.Parse("1a55b12e-65b8-4542-b4c1-6676c30311e7"),
-                Title = "Empowering Tomorrow's Leaders: College Projects Receive Major Funding Boost",
-                Subtitle = "",
-                Description = "Desc Test",
-                Published = new DateOnly(2024, 1, 1),
-                Imagecovername = "cover.jpg"
-            },
-            new BlogArticle
-            {
-                Id = Guid.Parse("93097c20-6558-4ed9-a27e-8bf07fb59b8a"),
-                Title = "From Campus to Capital: Student-Led Ventures Garner Investment for Impactful Initiatives",
-                Subtitle = "",
-                Description = "Desc Test",
-                Published = new DateOnly(2024, 1, 1),
-                Imagecovername = "cover.jpg"
-            },
-            new BlogArticle
-            {
-                Id = Guid.Parse("598004de-bc37-4300-8271-3c1c0bb5c430"),
-                Title = "Shaping the Future: College Students' Ambitious Projects Win Substantial Funding",
-                Subtitle = "",
                 Description = "Desc Test",
                 Published = new DateOnly(2024, 1, 1),
                 Imagecovername = "cover.jpg"
             }
-        );
+        };
 
-        modelBuilder.Entity<Category>().HasData(
+        List<Category> categoriesSeedData = new List<Category>
+        {
             new Category
             {
                 Id = Guid.Parse("4a858ba2-cc64-4752-973a-2b1acba5d78d"), Name = "product"
@@ -61,9 +118,10 @@ public static class SeedService
             {
                 Id = Guid.Parse("59cb7c8b-8e33-45d6-b066-214f3145a3c0"), Name = "environment"
             }
-        );
+        };
 
-        modelBuilder.Entity<Project>().HasData(
+        List<Project> projectsSeedData = new List<Project>
+        {
             new Project
             {
                 Id = Guid.Parse("7e4788cd-77a9-4b03-9412-385a482cf489"),
@@ -132,87 +190,16 @@ public static class SeedService
                 X = "",
                 Instagram = ""
             }
-        );
+        };
 
-        modelBuilder.Entity<User>().HasData(
-            new User
-            {
-                Id = Guid.Parse("c0c343f3-a9d0-4ae6-93e4-0d1923b04e60"),
-                Name = "testuser1",
-                Hashedpassword = passwordHash.CreateHashedPassword("1234"),
-                Usertype = UserTypeEnum.User,
-                PhoneNumber = "123456789",
-                Email = "test@gmail.com",
-                Facebook = "",
-                Instagram = "",
-                X = "",
-                Profileimage = "profile.jpg"
-            },
-            new User
-            {
-                Id = Guid.Parse("913eedbd-a304-478e-beee-4c8db66bd86a"),
-                Name = "testuser2",
-                Hashedpassword = passwordHash.CreateHashedPassword("1234"),
-                Usertype = UserTypeEnum.User,
-                PhoneNumber = "123456789",
-                Email = "test@gmail.com",
-                Facebook = "",
-                Instagram = "",
-                X = "",
-                Profileimage = "profile.jpg"
-            },
-            new User
-            {
-                Id = Guid.Parse("2e445054-8f22-4812-adb7-38cd849c976b"),
-                Name = "testuser3",
-                Hashedpassword = passwordHash.CreateHashedPassword("1234"),
-                Usertype = UserTypeEnum.User,
-                PhoneNumber = "123456789",
-                Email = "test@gmail.com",
-                Facebook = "",
-                Instagram = "",
-                X = "",
-                Profileimage = "profile.jpg"
-            },
-            new User
-            {
-                Id = Guid.Parse("a5379337-e6a4-4222-aa88-233358bda6e9"),
-                Name = "testuser4",
-                Hashedpassword = passwordHash.CreateHashedPassword("1234"),
-                Usertype = UserTypeEnum.User,
-                PhoneNumber = "123456789",
-                Email = "test@gmail.com",
-                Facebook = "",
-                Instagram = "",
-                X = "",
-                Profileimage = "profile.jpg"
-            },
-            new User
-            {
-                Id = Guid.Parse("9bdfe044-4b02-40a7-ade7-4570e68af19c"),
-                Name = "testuser5",
-                Hashedpassword = passwordHash.CreateHashedPassword("1234"),
-                Usertype = UserTypeEnum.User,
-                PhoneNumber = "123456789",
-                Email = "test@gmail.com",
-                Facebook = "",
-                Instagram = "",
-                X = "",
-                Profileimage = "profile.jpg"
-            },
-            new User
-            {
-                Id = Guid.Parse("c8b590f1-c920-4c1b-9237-852bc0b43518"),
-                Name = "testadmin",
-                Hashedpassword = passwordHash.CreateHashedPassword("1234"),
-                Usertype = UserTypeEnum.User,
-                PhoneNumber = "123456789",
-                Email = "test@gmail.com",
-                Facebook = "",
-                Instagram = "",
-                X = "",
-                Profileimage = "profile.jpg"
-            }
-        );
+        if (await dbContext.Users.AnyAsync()) return;
+
+        await dbContext.Database.MigrateAsync();
+
+        await dbContext.Users.AddRangeAsync(usersSeedData);
+        await dbContext.BlogArticles.AddRangeAsync(blogArticlesSeedData);
+        await dbContext.Categories.AddRangeAsync(categoriesSeedData);
+        await dbContext.Projects.AddRangeAsync(projectsSeedData);
+        await dbContext.SaveChangesAsync();
     }
 }

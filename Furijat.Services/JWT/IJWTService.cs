@@ -2,7 +2,7 @@
 
 namespace Furijat.Services.Jwt;
 
-public interface IJWT
+public interface IJWTService
 {
     public string CreateToken(JWTRequestDTO jwtRequest);
 }

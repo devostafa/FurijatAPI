@@ -20,23 +20,22 @@ public class AuthenticationController : BaseController
     }
 
     [HttpPost("login")]
-    [Produces("application/json")]
-    public async Task<string?> Login(LoginRequestDTO loginrequest)
+    public async Task<string?> Login(LoginRequestDTO loginReq)
     {
-        return await _auth.LoginAsync(loginrequest);
+        return await _auth.LoginAsync(loginReq);
     }
 
     [HttpPost("register")]
-    public async Task<bool> Register(RegisterRequestDTO registerrequest)
+    public async Task<bool> Register(RegisterRequestDTO registerReq)
     {
-        return await _auth.RegisterAsync(registerrequest);
+        return await _auth.RegisterAsync(registerReq);
     }
 
     [Authorize]
     [HttpGet("user")]
     public async Task<UserResponseDTO?> GetUserInfo()
     {
-        var userId = HttpContext.User.FindFirst("userid").Value;
+        var userId = HttpContext.User.FindFirst("userId").Value;
 
         if (userId == null) return null;
 

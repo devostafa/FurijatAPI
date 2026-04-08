@@ -12,15 +12,14 @@ namespace Furijat.Data.Repositories.ProjectsRepository;
 public class ProjectsRepository : IProjectsRepository
 {
     private readonly DataContext _db;
-    private readonly IWebHostEnvironment _hostenv;
-
     private readonly IMapper _mapper;
+    private readonly IWebHostEnvironment _webHostEnv;
 
-    public ProjectsRepository(DataContext db, IMapper mapper, IWebHostEnvironment hostenv)
+    public ProjectsRepository(DataContext db, IMapper mapper, IWebHostEnvironment webHostEnv)
     {
         _mapper = mapper;
         _db = db;
-        _hostenv = hostenv;
+        _webHostEnv = webHostEnv;
     }
 
     public async Task<List<ProjectResponseDTO>> GetProjectsAsync(string? categoryId)
@@ -37,7 +36,7 @@ public class ProjectsRepository : IProjectsRepository
     public async Task<bool> AddProjectAsync(ProjectRequestDTO newProjectRequest)
     {
         var newproject = _mapper.Map<Project>(newProjectRequest);
-        Directory.CreateDirectory(Path.Combine(_hostenv.ContentRootPath, "Storage", "Projects", $"{newproject.Id}", "Images"));
+        Directory.CreateDirectory(Path.Combine(_webHostEnv.ContentRootPath, "Storage", "Projects", $"{newproject.Id}", "Images"));
 
         foreach (var imagefile in newProjectRequest.ImagesFiles)
         {
@@ -116,7 +115,7 @@ public class ProjectsRepository : IProjectsRepository
 
             foreach (var project in allProjects)
             {
-                var productfoldertocreate = Path.Combine(_hostenv.ContentRootPath, "Storage", "Projects",
+                var productfoldertocreate = Path.Combine(_webHostEnv.ContentRootPath, "Storage", "Projects",
                     $"{project.Id}", "Images");
                 Directory.CreateDirectory(productfoldertocreate);
             }
@@ -134,7 +133,7 @@ public class ProjectsRepository : IProjectsRepository
     {
         var retry = 0;
         var finalcheck = false;
-        var filetocreate = Path.Combine(_hostenv.ContentRootPath, "Storage", "Projects", $"{projectid}", "Images", $"{imgfile.FileName}");
+        var filetocreate = Path.Combine(_webHostEnv.ContentRootPath, "Storage", "Projects", $"{projectid}", "Images", $"{imgfile.FileName}");
 
         if (File.Exists(filetocreate))
         {

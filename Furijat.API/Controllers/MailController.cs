@@ -10,6 +10,6 @@ public class MailController(IMail mailService) : BaseController
     [HttpPost("send")]
     public async Task<bool> SendMail(MailRequestDTO mailRequestDto)
     {
-        return await mailService.SendMail(mailRequestDto);
+        return await mailService.SendMailAsync(mailRequestDto);
     }
 }

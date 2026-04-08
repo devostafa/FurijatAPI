@@ -21,7 +21,7 @@ public static class ServicesRegisterExtension
         serviceCollection.AddHttpContextAccessor();
         serviceCollection.AddScoped<IPasswordHash, PasswordHash.PasswordHash>();
         serviceCollection.AddScoped<IAuthentication, Authentication.Authentication>();
-        serviceCollection.AddScoped<IJWT, Jwt.JWT>();
+        serviceCollection.AddScoped<IJWTService, JWTService>();
         serviceCollection.AddScoped<IDonationService, DonationService>();
         serviceCollection.AddScoped<IMail, Mail.Mail>();
 

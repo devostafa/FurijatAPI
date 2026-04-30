@@ -9,12 +9,12 @@ namespace Furijat.Services.Donation;
 public class DonationService : IDonationService
 {
     private readonly DataContext _db;
-    private readonly IMail _mailService;
+    private readonly IMailService _mailService;
     private readonly IMapper _mapper;
     private readonly IProjectsRepository _projectsRepo;
     private readonly IUserRepository _usersRepo;
 
-    public DonationService(IProjectsRepository projectsRepo, IMapper mapper, IUserRepository usersRepo, DataContext db, IMail mailService)
+    public DonationService(IProjectsRepository projectsRepo, IMapper mapper, IUserRepository usersRepo, DataContext db, IMailService mailService)
     {
         _projectsRepo = projectsRepo;
         _usersRepo = usersRepo;

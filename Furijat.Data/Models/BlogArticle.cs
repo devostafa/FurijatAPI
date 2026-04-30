@@ -10,5 +10,5 @@ public class BlogArticle
     public string Subtitle { get; set; }
     public string Description { get; set; }
     public DateOnly Published { get; set; }
-    public string Imagecovername { get; set; }
+    public string CoverName { get; set; }
 }

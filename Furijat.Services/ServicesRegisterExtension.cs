@@ -19,12 +19,8 @@ public static class ServicesRegisterExtension
     public static void AddServices(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddHttpContextAccessor();
-        serviceCollection.AddScoped<IPasswordHash, PasswordHash.PasswordHash>();
-        serviceCollection.AddScoped<IAuthentication, Authentication.Authentication>();
-        serviceCollection.AddScoped<IJWTService, JWTService>();
-        serviceCollection.AddScoped<IDonationService, DonationService>();
-        serviceCollection.AddScoped<IMail, Mail.Mail>();
-
+        
+        // Scans and registers class services from Services project
         serviceCollection.Scan(selector => selector
             .FromAssemblyOf<CommandDispatcher>()
             .AddClasses()
@@ -38,6 +34,7 @@ public static class ServicesRegisterExtension
     {
         serviceCollection.AddDbContext<DataContext>();
 
+        // Scans and registers class services from Data project
         serviceCollection.Scan(selector => selector
             .FromAssemblyOf<DataContext>()
             .AddClasses()
@@ -45,6 +42,7 @@ public static class ServicesRegisterExtension
             .AsImplementedInterfaces()
             .WithScopedLifetime()
         );
+
         serviceCollection.AddAutoMapper(cfg => { }, typeof(MapperProfile));
     }
 

@@ -8,15 +8,17 @@ namespace Furijat.Services.Seed;
 
 public static class SeedService
 {
-    public static async void SeedDatabase(DataContext dbContext, IPasswordHash passwordHash)
+    public static async Task SeedDatabase(DataContext dbContext, IHashService hashService)
     {
+        if (await dbContext.Users.AnyAsync()) return;
+
         List<User> usersSeedData = new List<User>
         {
             new User
             {
                 Id = Guid.Parse("c0c343f3-a9d0-4ae6-93e4-0d1923b04e60"),
                 Name = "testuser1",
-                Hashedpassword = passwordHash.CreateHashedPassword("1234"),
+                PasswordHash = hashService.CreateHashedPassword("1234"),
                 Usertype = UserTypeEnum.User,
                 PhoneNumber = "123456789",
                 Email = "test1@gmail.com",
@@ -29,7 +31,7 @@ public static class SeedService
             {
                 Id = Guid.Parse("913eedbd-a304-478e-beee-4c8db66bd86a"),
                 Name = "testuser2",
-                Hashedpassword = passwordHash.CreateHashedPassword("1234"),
+                PasswordHash = hashService.CreateHashedPassword("1234"),
                 Usertype = UserTypeEnum.User,
                 PhoneNumber = "123456789",
                 Email = "test2@gmail.com",
@@ -42,7 +44,7 @@ public static class SeedService
             {
                 Id = Guid.Parse("2e445054-8f22-4812-adb7-38cd849c976b"),
                 Name = "testuser3",
-                Hashedpassword = passwordHash.CreateHashedPassword("1234"),
+                PasswordHash = hashService.CreateHashedPassword("1234"),
                 Usertype = UserTypeEnum.User,
                 PhoneNumber = "123456789",
                 Email = "test3@gmail.com",
@@ -55,7 +57,7 @@ public static class SeedService
             {
                 Id = Guid.Parse("a5379337-e6a4-4222-aa88-233358bda6e9"),
                 Name = "testuser4",
-                Hashedpassword = passwordHash.CreateHashedPassword("1234"),
+                PasswordHash = hashService.CreateHashedPassword("1234"),
                 Usertype = UserTypeEnum.User,
                 PhoneNumber = "123456789",
                 Email = "test4@gmail.com",
@@ -68,7 +70,7 @@ public static class SeedService
             {
                 Id = Guid.Parse("9bdfe044-4b02-40a7-ade7-4570e68af19c"),
                 Name = "testuser5",
-                Hashedpassword = passwordHash.CreateHashedPassword("1234"),
+                PasswordHash = hashService.CreateHashedPassword("1234"),
                 Usertype = UserTypeEnum.User,
                 PhoneNumber = "123456789",
                 Email = "test5@gmail.com",
@@ -81,7 +83,7 @@ public static class SeedService
             {
                 Id = Guid.Parse("c8b590f1-c920-4c1b-9237-852bc0b43518"),
                 Name = "testadmin",
-                Hashedpassword = passwordHash.CreateHashedPassword("1234"),
+                PasswordHash = hashService.CreateHashedPassword("1234"),
                 Usertype = UserTypeEnum.User,
                 PhoneNumber = "123456789",
                 Email = "test6@gmail.com",
@@ -98,9 +100,10 @@ public static class SeedService
             {
                 Id = Guid.Parse("0f97ea1d-e247-4cf5-a6d9-5f9d3265e220"),
                 Title = "Innovative Breakthroughs: College Students Secure Funding for Groundbreaking Projects",
+                Subtitle = "Subtitle Test",
                 Description = "Desc Test",
                 Published = new DateOnly(2024, 1, 1),
-                Imagecovername = "cover.jpg"
+                CoverName = "cover.jpg"
             }
         };
 
@@ -129,15 +132,17 @@ public static class SeedService
                 Description = "Description Test",
                 CategoryId = Guid.Parse("59cb7c8b-8e33-45d6-b066-214f3145a3c0"),
                 UserId = Guid.Parse("c0c343f3-a9d0-4ae6-93e4-0d1923b04e60"),
-                Currentfund = 500,
+                CurrentFund = 500,
                 FundRequired = 2000,
-                ImageNames = new[]
+                ImagesNames = new[]
                 {
                     "1.jpg", "2.jpg"
                 },
-                Facebook = "",
-                X = "",
-                Instagram = ""
+                SocialMedia = new SocialMedia
+                {
+                    Platform = SocialMediaPlatformEnum.Facebook,
+                    Url = "https://facebook.com/greener-egypt"
+                }
             },
             new Project
             {
@@ -145,16 +150,18 @@ public static class SeedService
                 Title = "My Super Awesome Health Machine Research Paper",
                 Description = "Description Test",
                 CategoryId = Guid.Parse("fafaad46-3fbe-40ac-ad63-c311829668a4"),
-                Currentfund = 500,
+                CurrentFund = 500,
                 FundRequired = 1000000,
                 UserId = Guid.Parse("913eedbd-a304-478e-beee-4c8db66bd86a"),
-                ImageNames = new[]
+                ImagesNames = new[]
                 {
                     "1.jpg", "2.jpg"
                 },
-                Facebook = "",
-                X = "",
-                Instagram = ""
+                SocialMedia = new SocialMedia
+                {
+                    Platform = SocialMediaPlatformEnum.Facebook,
+                    Url = "https://facebook.com/health-machine"
+                }
             },
             new Project
             {
@@ -162,16 +169,18 @@ public static class SeedService
                 Title = "Electric Koshary Machine",
                 Description = "Description Test",
                 CategoryId = Guid.Parse("4a858ba2-cc64-4752-973a-2b1acba5d78d"),
-                Currentfund = 500,
+                CurrentFund = 500,
                 FundRequired = 120000,
                 UserId = Guid.Parse("2e445054-8f22-4812-adb7-38cd849c976b"),
-                ImageNames = new[]
+                ImagesNames = new[]
                 {
                     "1.jpg", "2.jpg"
                 },
-                Facebook = "",
-                X = "",
-                Instagram = ""
+                SocialMedia = new SocialMedia
+                {
+                    Platform = SocialMediaPlatformEnum.Facebook,
+                    Url = "https://facebook.com/koshary-machine"
+                }
             },
             new Project
             {
@@ -180,21 +189,19 @@ public static class SeedService
                 Description = "Description Test",
                 CategoryId = Guid.Parse("4a858ba2-cc64-4752-973a-2b1acba5d78d"),
                 UserId = Guid.Parse("a5379337-e6a4-4222-aa88-233358bda6e9"),
-                Currentfund = 500,
+                CurrentFund = 500,
                 FundRequired = 60000,
-                ImageNames = new[]
+                ImagesNames = new[]
                 {
                     "1.jpg", "2.jpg"
                 },
-                Facebook = "",
-                X = "",
-                Instagram = ""
+                SocialMedia = new SocialMedia
+                {
+                    Platform = SocialMediaPlatformEnum.Facebook,
+                    Url = "https://facebook.com/indie-game"
+                }
             }
         };
-
-        if (await dbContext.Users.AnyAsync()) return;
-
-        await dbContext.Database.MigrateAsync();
 
         await dbContext.Users.AddRangeAsync(usersSeedData);
         await dbContext.BlogArticles.AddRangeAsync(blogArticlesSeedData);

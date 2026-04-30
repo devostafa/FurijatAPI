@@ -7,12 +7,12 @@ using MimeKit.Utils;
 
 namespace Furijat.Services.Mail;
 
-public class Mail : IMail
+public class MailService : IMailService
 {
     private readonly IConfiguration _config;
     private readonly IConfigurationSection _emailSettings;
 
-    public Mail(IConfiguration config)
+    public MailService(IConfiguration config)
     {
         _config = config;
         _emailSettings = _config.GetSection("EmailSettings");

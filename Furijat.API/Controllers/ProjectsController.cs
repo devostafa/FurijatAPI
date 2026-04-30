@@ -23,12 +23,12 @@ public class ProjectsController : BaseController
 
         if (pageNumber == 0)
         {
-            List<ProjectResponseDTO> projects = await _projectsRepo.GetProjectsAsync();
+            List<ProjectResponseDTO> projects = await _projectsRepo.GetProjectsAsync(null);
             return Ok(projects);
         }
         else
         {
-            List<ProjectResponseDTO> projects = await _projectsRepo.GetProjectsAsync();
+            List<ProjectResponseDTO> projects = await _projectsRepo.GetProjectsAsync(null);
             var totalPages = 0;
             var totalPagesDecimal = projects.Count / (decimal)pageSize;
 

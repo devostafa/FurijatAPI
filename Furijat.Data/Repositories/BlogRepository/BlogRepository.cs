@@ -1,4 +1,6 @@
-﻿using Furijat.Data.DTOs.ResponseDTO;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Furijat.Data.DTOs.ResponseDTO;
 using Furijat.Data.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;

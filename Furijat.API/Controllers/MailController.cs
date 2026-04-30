@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Furijat.API.Controllers;
 
 [Route("mail")]
-public class MailController(IMail mailService) : BaseController
+public class MailController(IMailService mailService) : BaseController
 {
     [HttpPost("send")]
     public async Task<bool> SendMail(MailRequestDTO mailRequestDto)

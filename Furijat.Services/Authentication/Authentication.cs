@@ -11,17 +11,18 @@ namespace Furijat.Services.Authentication;
 
 public class Authentication : IAuthentication
 {
+    private readonly IHashService _hashServiceService;
     private readonly IJWTService _jwtService;
-    private readonly IMail _mailService;
+    private readonly IMailService _mailService;
     private readonly IMapper _mapper;
-    private readonly IPasswordHash _passwordHashService;
     private readonly IUserRepository _usersRepo;
 
-    public Authentication(IJWTService jwtService, IMapper mapper, IPasswordHash passwordHashService, IUserRepository usersRepo, IMail mailService)
+    public Authentication(IJWTService jwtService, IMapper mapper, IHashService hashServiceService, IUserRepository usersRepo,
+        IMailService mailService)
     {
         _jwtService = jwtService;
         _mapper = mapper;
-        _passwordHashService = passwordHashService;
+        _hashServiceService = hashServiceService;
         _usersRepo = usersRepo;
         _mailService = mailService;
     }
@@ -41,7 +42,7 @@ public class Authentication : IAuthentication
 
         var jwtRequest = new JWTRequestDTO(user.Id.ToString(), user.Usertype);
 
-        var verifyPasswordResult = await VerifyPassword(loginreq.Password, user.Hashedpassword);
+        var verifyPasswordResult = await VerifyPassword(loginreq.Password, user.PasswordHash);
 
         if (verifyPasswordResult)
         {
@@ -56,7 +57,7 @@ public class Authentication : IAuthentication
     {
         var checkResult = await _usersRepo.CheckUserExistsAsync(null, registerReq.Email, null);
 
-        var hashedPassword = _passwordHashService.CreateHashedPassword(registerReq.Password);
+        var hashedPassword = _hashServiceService.CreateHashedPassword(registerReq.Password);
 
         var result = await _usersRepo.AddUserAsync(registerReq, hashedPassword);
 
@@ -79,7 +80,7 @@ public class Authentication : IAuthentication
         var extractedsalt = extractedsavedpassword[0];
         var extractedhashedpass = extractedsavedpassword[1];
         //2-generate hashed password with given Salt
-        var passwordtotest = _passwordHashService.HashPasswordWithGivenSalt(extractedsalt, passwordtoverify);
+        var passwordtotest = _hashServiceService.HashPasswordWithGivenSalt(extractedsalt, passwordtoverify);
 
         //3-compare
         if (passwordtotest == extractedhashedpass)

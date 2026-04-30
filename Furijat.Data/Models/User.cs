@@ -7,7 +7,7 @@ public class User
 {
     [Key] public Guid Id { get; set; }
     public string Name { get; set; }
-    public string Hashedpassword { get; set; }
+    public string PasswordHash { get; set; }
     public UserTypeEnum Usertype { get; set; }
     public string PhoneNumber { get; set; }
     public string Email { get; set; }
@@ -15,7 +15,6 @@ public class User
     public string? X { get; set; }
     public string? Instagram { get; set; }
     public string Profileimage { get; set; }
-
     public Project? Project { get; set; } // For now just 1 project per user
     // public IList<Donation> Donations { get; set; }
 }

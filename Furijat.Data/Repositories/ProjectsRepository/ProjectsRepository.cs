@@ -1,4 +1,6 @@
-﻿using Furijat.Data.DTOs.RequestDTO;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Furijat.Data.DTOs.RequestDTO;
 using Furijat.Data.DTOs.ResponseDTO;
 using Furijat.Data.Enums;
 using Furijat.Data.Models;
@@ -41,7 +43,7 @@ public class ProjectsRepository : IProjectsRepository
         foreach (var imagefile in newProjectRequest.ImagesFiles)
         {
             var checkimg = await AddProjectImage(newproject.Id.ToString(), imagefile);
-            if (checkimg) newproject.ImageNames.Append(imagefile.FileName);
+            if (checkimg) newproject.ImagesNames.Add(imagefile.FileName);
         }
 
         await _db.Projects.AddAsync(newproject);
@@ -59,9 +61,9 @@ public class ProjectsRepository : IProjectsRepository
         {
             var found = false;
 
-            for (var i = 0; i < project.ImageNames.Length; i++)
+            for (var i = 0; i < project.ImagesNames.Count; i++)
             {
-                if (project.ImageNames[i] == imgfile.FileName)
+                if (project.ImagesNames[i] == imgfile.FileName)
                 {
                     found = true;
                 }
@@ -70,7 +72,7 @@ public class ProjectsRepository : IProjectsRepository
             if (!found)
             {
                 var check = await AddProjectImage(project.Id.ToString(), imgfile);
-                if (check) project.ImageNames.Append(imgfile.FileName);
+                if (check) project.ImagesNames.Add(imgfile.FileName);
             }
         }
 
@@ -89,6 +91,19 @@ public class ProjectsRepository : IProjectsRepository
 
         await _db.SaveChangesAsync();
 
+        return true;
+    }
+
+    public async Task<bool> UpdateProjectLikes(string projectId)
+    {
+        var project = await _db.Projects.FirstAsync(p => p.Id == Guid.Parse(projectId));
+        
+        project.Likes++;
+        
+        _db.Projects.Update(project);
+        
+        await _db.SaveChangesAsync();
+        
         return true;
     }
 
@@ -128,21 +143,20 @@ public class ProjectsRepository : IProjectsRepository
         }
     }
 
-
-    private async Task<bool> AddProjectImage(string projectid, IFormFile imgfile)
+    private async Task<bool> AddProjectImage(string projectId, IFormFile imgFile)
     {
         var retry = 0;
-        var finalcheck = false;
-        var filetocreate = Path.Combine(_webHostEnv.ContentRootPath, "Storage", "Projects", $"{projectid}", "Images", $"{imgfile.FileName}");
+        var finalCheck = false;
+        var imgFileToCreate = Path.Combine(_webHostEnv.ContentRootPath, "Storage", "Projects", $"{projectId}", "Images", $"{imgFile.FileName}");
 
-        if (File.Exists(filetocreate))
+        if (File.Exists(imgFileToCreate))
         {
-            finalcheck = true;
+            finalCheck = true;
         }
         else
         {
-            var stream = new FileStream(filetocreate, FileMode.Create);
-            var check = imgfile.CopyToAsync(stream).IsCompletedSuccessfully;
+            var stream = new FileStream(imgFileToCreate, FileMode.Create);
+            var check = imgFile.CopyToAsync(stream).IsCompletedSuccessfully;
 
             if (check)
             {
@@ -151,15 +165,15 @@ public class ProjectsRepository : IProjectsRepository
 
             if (retry > 1)
             {
-                finalcheck = false;
+                finalCheck = false;
             }
             else
             {
                 retry += 1;
-                AddProjectImage(projectid, imgfile);
+                AddProjectImage(projectId, imgFile);
             }
         }
 
-        return finalcheck;
+        return finalCheck;
     }
 }

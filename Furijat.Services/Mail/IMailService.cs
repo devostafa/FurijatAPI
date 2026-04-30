@@ -2,7 +2,7 @@
 
 namespace Furijat.Services.Mail;
 
-public interface IMail
+public interface IMailService
 {
     public Task<bool> SendMailAsync(MailRequestDTO mailRequestDTO);
 }

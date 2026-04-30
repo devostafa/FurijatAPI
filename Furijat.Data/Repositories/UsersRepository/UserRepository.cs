@@ -1,4 +1,6 @@
-﻿using Furijat.Data.DTOs.RequestDTO;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Furijat.Data.DTOs.RequestDTO;
 using Furijat.Data.DTOs.ResponseDTO;
 using Furijat.Data.Enums;
 using Furijat.Data.Models;
@@ -47,7 +49,7 @@ public class UserRepository : IUserRepository
         {
             Id = Guid.NewGuid(),
             Name = newUserRequest.Name,
-            Hashedpassword = hashedPassword,
+            PasswordHash = hashedPassword,
             Usertype = UserTypeEnum.User,
             PhoneNumber = newUserRequest.PhoneNumber,
             Email = newUserRequest.Email,

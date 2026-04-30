@@ -19,7 +19,7 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    Startup.Execute(scope.ServiceProvider, app.Environment);
+    await Startup.Execute(scope.ServiceProvider, app.Environment);
 }
 
 // Configure the HTTP request pipeline.

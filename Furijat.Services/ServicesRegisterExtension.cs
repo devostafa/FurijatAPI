@@ -60,7 +60,7 @@ public static class ServicesRegisterExtension
                 ValidateIssuer = true,
                 ValidateAudience = false,
                 ValidIssuer = configuration["URL"],
-                ValidAudience = configuration["clientURL"],
+                ValidAudience = configuration["ClientURL"],
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
             };

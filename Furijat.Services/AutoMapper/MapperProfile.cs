@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using Furijat.Data.DTOs;
 using Furijat.Data.DTOs.RequestDTO;
 using Furijat.Data.DTOs.ResponseDTO;
 using Furijat.Data.Models;
-using Furijat.Services.Jwt.DTO;
+using Furijat.Services.JWT.DTO;
 using ProjectResponseDTO = Furijat.Data.DTOs.ResponseDTO.ProjectResponseDTO;
 
 namespace Furijat.Services.AutoMapper;

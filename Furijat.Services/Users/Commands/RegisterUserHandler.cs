@@ -2,8 +2,8 @@
 using Furijat.Data.Enums;
 using Furijat.Data.Repositories.UsersRepository;
 using Furijat.Services.Base.Commands;
+using Furijat.Services.Hash;
 using Furijat.Services.Mail;
-using Furijat.Services.PasswordHash;
 
 namespace Furijat.Services.Users.Commands;
 
@@ -29,13 +29,13 @@ public class RegisterUserHandler : ICommandHandler<RegisterUserCommand, bool>
         var user = await _userRepository.GetUserAsync(newUserId);
 
         var mailRequest = new MailRequestDTO(
-            MailType: MailRequestTypeEnum.NewUserRegistered,
-            EmailTo: user.Email,
-            Subject: "Registration Successful",
-            CustomMessage: $"Welcome to Furijat. Dear {user.Name}, thank you for registering",
-            User: user,
-            Project: null,
-            Donation: null
+            MailRequestTypeEnum.NewUserRegistered,
+            user.Email,
+            "Registration Successful",
+            $"Welcome to Furijat. Dear {user.Name}, thank you for registering",
+            user,
+            null,
+            null
         );
 
         var emailResult = await _mailService.SendMailAsync(mailRequest);

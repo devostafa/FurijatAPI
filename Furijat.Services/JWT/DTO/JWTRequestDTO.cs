@@ -1,5 +1,5 @@
 ﻿using Furijat.Data.Enums;
 
-namespace Furijat.Services.Jwt.DTO;
+namespace Furijat.Services.JWT.DTO;
 
 public record JWTRequestDTO(string UserId, UserTypeEnum UserType);

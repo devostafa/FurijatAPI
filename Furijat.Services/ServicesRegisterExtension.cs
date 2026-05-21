@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Furijat.Data;
+using Furijat.Data.Enums;
 using Furijat.Services.AutoMapper;
 using Furijat.Services.Base.Commands;
 using Microsoft.Extensions.Configuration;
@@ -61,9 +62,15 @@ public static class ServicesRegisterExtension
             };
         });
 
-        serviceCollection.AddCors(opt =>
+        serviceCollection.AddAuthorization(options =>
         {
-            opt.AddPolicy("CorsPolicy",
+            options.AddPolicy("AdminOnly", policy =>
+                policy.RequireRole(UserTypeEnum.Admin.ToString()));
+        });
+
+        serviceCollection.AddCors(options =>
+        {
+            options.AddPolicy("CorsPolicy",
                 corsPolicyBuilder =>
                 {
                     corsPolicyBuilder.WithOrigins(configuration["Cors:ClientOrigin"], configuration["Cors:ApiOrigin"]).AllowAnyHeader()

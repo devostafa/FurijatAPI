@@ -2,7 +2,4 @@
 
 namespace Furijat.Services.Projects.Commands;
 
-public class LikeProductCommand : ICommand<bool>
-{
-    public string ProductId { get; set; }
-}
+public record LikeProductCommand(string ProductId) : ICommand<bool>;

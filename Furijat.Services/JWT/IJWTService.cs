@@ -1,6 +1,6 @@
-﻿using Furijat.Services.Jwt.DTO;
+﻿using Furijat.Services.JWT.DTO;
 
-namespace Furijat.Services.Jwt;
+namespace Furijat.Services.JWT;
 
 public interface IJWTService
 {

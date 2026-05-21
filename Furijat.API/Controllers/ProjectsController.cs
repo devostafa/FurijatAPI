@@ -1,7 +1,7 @@
 ﻿using Furijat.Data.DTOs.RequestDTO;
-using Furijat.Data.Enums;
 using Furijat.Services.Base.Commands;
 using Furijat.Services.Base.Queries;
+using Furijat.Services.Projects.Commands;
 using Furijat.Services.Projects.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,9 +12,9 @@ namespace Furijat.API.Controllers;
 public class ProjectsController(IQueryDispatcher queryDispatcher, ICommandDispatcher commandDispatcher) : BaseController
 {
     [HttpGet("projects")]
-    public async Task<IActionResult> GetProjects(int pageNumber, ProjectCategoryEnum? category)
+    public async Task<IActionResult> GetProjects(int pageNumber, string? categoryId)
     {
-        var query = new GetProjectsQuery(pageNumber, category);
+        var query = new GetProjectsQuery(pageNumber, categoryId);
 
         var result = await queryDispatcher.QueryAsync(query);
 
@@ -37,14 +37,20 @@ public class ProjectsController(IQueryDispatcher queryDispatcher, ICommandDispat
     {
         var command = new RegisterNewProjectCommand(newProjectRequest);
 
-        var result = await commandDispatcher.DispatchAsync(command);
+        var newProjectId = await commandDispatcher.DispatchAsync(command);
+
+        if (newProjectId == null) return BadRequest("Registration of the new project failed.");
+
+        var query = new CheckProjectExistsQuery(newProjectId);
+
+        var result = await queryDispatcher.QueryAsync(query);
 
         return Ok(result);
     }
 
     [Authorize]
     [HttpPost("update")]
-    public async Task<IActionResult> UpdateProject(ProjectRequestDTO projecttoadd)
+    public async Task<IActionResult> UpdateProject(ProjectRequestDTO updateProjectRequest)
     {
         var command = new UpdateProjectCommand(newProjectRequest);
 

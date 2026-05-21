@@ -1,7 +1,7 @@
 ﻿using Furijat.Data;
 using Furijat.Data.Enums;
 using Furijat.Data.Models;
-using Furijat.Services.PasswordHash;
+using Furijat.Services.Hash;
 using Microsoft.EntityFrameworkCore;
 
 namespace Furijat.Services.Seed;

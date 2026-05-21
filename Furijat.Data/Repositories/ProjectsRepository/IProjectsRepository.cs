@@ -10,7 +10,9 @@ public interface IProjectsRepository
 
     public Task<ProjectResponseDTO> GetProjectAsync(string projectId);
 
-    public Task<bool> AddProjectAsync(ProjectRequestDTO newProjectRequest);
+    public Task<bool> CheckProjectExistsAsync(string projectId);
+
+    public Task<string?> AddProjectAsync(ProjectRequestDTO newProjectRequest);
 
     public Task<bool> UpdateProjectAsync(ProjectRequestDTO projectUpdateRequest);
 

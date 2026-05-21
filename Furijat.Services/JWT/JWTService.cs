@@ -1,11 +1,11 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Furijat.Services.Jwt.DTO;
+using Furijat.Services.JWT.DTO;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Furijat.Services.Jwt;
+namespace Furijat.Services.JWT;
 
 public class JWTService : IJWTService
 {

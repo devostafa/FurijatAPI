@@ -2,7 +2,7 @@
 using Furijat.Data.Repositories.BlogRepository;
 using Furijat.Data.Repositories.ProjectsRepository;
 using Furijat.Data.Repositories.UsersRepository;
-using Furijat.Services.PasswordHash;
+using Furijat.Services.Hash;
 using Furijat.Services.Seed;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;

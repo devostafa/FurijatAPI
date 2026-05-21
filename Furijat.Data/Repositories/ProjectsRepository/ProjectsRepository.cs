@@ -55,22 +55,6 @@ public class ProjectsRepository : IProjectsRepository
             .FirstAsync(p => p.Id == Guid.Parse(projectId));
     }
 
-    public async Task<bool> AddProjectAsync(ProjectRequestDTO newProjectRequest)
-    {
-        var newproject = _mapper.Map<Project>(newProjectRequest);
-        Directory.CreateDirectory(Path.Combine(_webHostEnv.ContentRootPath, "Storage", "Projects", $"{newproject.Id}", "Images"));
-
-        foreach (var imagefile in newProjectRequest.ImagesFiles)
-        {
-            var checkimg = await AddProjectImage(newproject.Id.ToString(), imagefile);
-            if (checkimg) newproject.ImagesNames.Add(imagefile.FileName);
-        }
-
-        await _db.Projects.AddAsync(newproject);
-        await _db.SaveChangesAsync();
-        return true;
-    }
-
     public async Task<bool> UpdateProjectAsync(ProjectRequestDTO projectUpdateRequest)
     {
         var project = await _db.Projects.FirstAsync(p => p.Id == projectUpdateRequest.Id);
@@ -161,6 +145,34 @@ public class ProjectsRepository : IProjectsRepository
         {
             throw new ApplicationException("Failed to create projects folders", ex);
         }
+    }
+
+    public Task<bool> CheckProjectExistsAsync(string projectId)
+    {
+        return _db.Projects.AnyAsync(p => p.Id == Guid.Parse(projectId));
+    }
+
+    public async Task<string?> AddProjectAsync(ProjectRequestDTO newProjectRequest)
+    {
+        var newProject = _mapper.Map<Project>(newProjectRequest);
+
+        Directory.CreateDirectory(Path.Combine(_webHostEnv.ContentRootPath, "Storage", "Projects", $"{newProject.Id}", "Images"));
+
+        foreach (var imagefile in newProjectRequest.ImagesFiles)
+        {
+            var checkimg = await AddProjectImage(newProject.Id.ToString(), imagefile);
+            if (checkimg) newProject.ImagesNames.Add(imagefile.FileName);
+        }
+
+        await _db.Projects.AddAsync(newProject);
+        await _db.SaveChangesAsync();
+
+        if (_db.Projects.Any(p => p.Id == newProject.Id))
+        {
+            return newProject.Id.ToString();
+        }
+
+        return null;
     }
 
     private async Task<bool> AddProjectImage(string projectId, IFormFile imgFile)

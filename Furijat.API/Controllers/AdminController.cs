@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Furijat.API.Controllers;
 
-[Authorize(Roles = "Admin")]
+[Authorize(Policy = "AdminOnly")]
 [Route("admin")]
 public class AdminController : BaseController
 {
@@ -23,10 +23,7 @@ public class AdminController : BaseController
     [HttpGet("project/approve/{projectId}")]
     public async Task<IActionResult> ApproveProject(string projectId)
     {
-        var command = new UpdateProjectStatusCommand
-        {
-            ProjectId = projectId, Status = ProjectStatusEnum.Approved
-        };
+        var command = new UpdateProjectStatusCommand(projectId, ProjectStatusEnum.Approved);
 
         var result = await _commandDispatcher.DispatchAsync(command);
 
@@ -36,10 +33,7 @@ public class AdminController : BaseController
     [HttpGet("project/reject/{projectId}")]
     public async Task<IActionResult> RejectProject(string projectId)
     {
-        var command = new UpdateProjectStatusCommand
-        {
-            ProjectId = projectId, Status = ProjectStatusEnum.Rejected
-        };
+        var command = new UpdateProjectStatusCommand(projectId, ProjectStatusEnum.Rejected);
 
         var result = await _commandDispatcher.DispatchAsync(command);
 

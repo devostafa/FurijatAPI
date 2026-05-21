@@ -24,15 +24,35 @@ public class ProjectsRepository : IProjectsRepository
         _webHostEnv = webHostEnv;
     }
 
-    public async Task<List<ProjectResponseDTO>> GetProjectsAsync(string? categoryId)
+    public async Task<PaginatedProjectsResponseDTO> GetProjectsAsync(int? pageNumber, ProjectCategoryEnum? category)
     {
-        return await _db.Projects.ProjectTo<ProjectResponseDTO>(_mapper.ConfigurationProvider).ToListAsync();
+        const int itemsPerPage = 10;
+        var actualPage = pageNumber ?? 1;
+        if (actualPage < 1) actualPage = 1;
+
+        IQueryable<Project> query = _db.Projects.AsQueryable();
+
+        if (!category.Equals(null))
+        {
+            query = query.Where(p => p.Category == category);
+        }
+
+        var totalProjects = await query.CountAsync();
+        var totalPages = (int)Math.Ceiling((double)totalProjects / itemsPerPage);
+
+        List<ProjectResponseDTO> projects = await query
+            .Skip((actualPage - 1) * itemsPerPage)
+            .Take(itemsPerPage)
+            .ProjectTo<ProjectResponseDTO>(_mapper.ConfigurationProvider)
+            .ToListAsync();
+
+        return new PaginatedProjectsResponseDTO(totalPages, projects);
     }
 
-    public async Task<ProjectResponseDTO> GetProjectAsync(string projectid)
+    public async Task<ProjectResponseDTO> GetProjectAsync(string projectId)
     {
         return await _db.Projects.Include(p => p.User).ProjectTo<ProjectResponseDTO>(_mapper.ConfigurationProvider)
-            .FirstAsync(p => p.Id == Guid.Parse(projectid));
+            .FirstAsync(p => p.Id == Guid.Parse(projectId));
     }
 
     public async Task<bool> AddProjectAsync(ProjectRequestDTO newProjectRequest)
@@ -97,13 +117,13 @@ public class ProjectsRepository : IProjectsRepository
     public async Task<bool> UpdateProjectLikes(string projectId)
     {
         var project = await _db.Projects.FirstAsync(p => p.Id == Guid.Parse(projectId));
-        
+
         project.Likes++;
-        
+
         _db.Projects.Update(project);
-        
+
         await _db.SaveChangesAsync();
-        
+
         return true;
     }
 

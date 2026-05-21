@@ -8,6 +8,20 @@ namespace Furijat.Services.Seed;
 
 public static class SeedService
 {
+    private static async Task SeedEntity<T>(DbSet<T> dbSet, List<T> seedData, Func<T, Guid> keySelector) where T : class
+    {
+        HashSet<Guid> existingIdsHashSet = await dbSet
+            .Select(p => EF.Property<Guid>(p, "Id"))
+            .ToHashSetAsync();
+
+        List<T> newItems = seedData
+            .Where(item => !existingIdsHashSet.Contains(keySelector(item)))
+            .ToList();
+
+        if (newItems.Any())
+            await dbSet.AddRangeAsync(newItems);
+    }
+
     public static async Task SeedDatabase(DataContext dbContext, IHashService hashService)
     {
         if (await dbContext.Users.AnyAsync()) return;
@@ -22,9 +36,9 @@ public static class SeedService
                 Usertype = UserTypeEnum.User,
                 PhoneNumber = "123456789",
                 Email = "test1@gmail.com",
-                Facebook = "",
-                Instagram = "",
-                X = "",
+                Facebook = "Test",
+                Instagram = "Test",
+                X = "Test",
                 Profileimage = "profile.jpg"
             },
             new User
@@ -35,9 +49,9 @@ public static class SeedService
                 Usertype = UserTypeEnum.User,
                 PhoneNumber = "123456789",
                 Email = "test2@gmail.com",
-                Facebook = "",
-                Instagram = "",
-                X = "",
+                Facebook = "Test",
+                Instagram = "Test",
+                X = "Test",
                 Profileimage = "profile.jpg"
             },
             new User
@@ -61,9 +75,9 @@ public static class SeedService
                 Usertype = UserTypeEnum.User,
                 PhoneNumber = "123456789",
                 Email = "test4@gmail.com",
-                Facebook = "",
-                Instagram = "",
-                X = "",
+                Facebook = "Test",
+                Instagram = "Test",
+                X = "Test",
                 Profileimage = "profile.jpg"
             },
             new User
@@ -74,15 +88,15 @@ public static class SeedService
                 Usertype = UserTypeEnum.User,
                 PhoneNumber = "123456789",
                 Email = "test5@gmail.com",
-                Facebook = "",
-                Instagram = "",
-                X = "",
+                Facebook = "Test",
+                Instagram = "Test",
+                X = "Test",
                 Profileimage = "profile.jpg"
             },
             new User
             {
                 Id = Guid.Parse("c8b590f1-c920-4c1b-9237-852bc0b43518"),
-                Name = "testadmin",
+                Name = "Test Admin",
                 PasswordHash = hashService.CreateHashedPassword("1234"),
                 Usertype = UserTypeEnum.User,
                 PhoneNumber = "123456789",
@@ -140,8 +154,7 @@ public static class SeedService
                 },
                 SocialMedia = new SocialMedia
                 {
-                    Platform = SocialMediaPlatformEnum.Facebook,
-                    Url = "https://facebook.com/greener-egypt"
+                    Platform = SocialMediaPlatformEnum.Facebook, Url = "https://facebook.com/greener-egypt"
                 }
             },
             new Project
@@ -159,8 +172,7 @@ public static class SeedService
                 },
                 SocialMedia = new SocialMedia
                 {
-                    Platform = SocialMediaPlatformEnum.Facebook,
-                    Url = "https://facebook.com/health-machine"
+                    Platform = SocialMediaPlatformEnum.Facebook, Url = "https://facebook.com/health-machine"
                 }
             },
             new Project
@@ -178,8 +190,7 @@ public static class SeedService
                 },
                 SocialMedia = new SocialMedia
                 {
-                    Platform = SocialMediaPlatformEnum.Facebook,
-                    Url = "https://facebook.com/koshary-machine"
+                    Platform = SocialMediaPlatformEnum.Facebook, Url = "https://facebook.com/koshary-machine"
                 }
             },
             new Project
@@ -197,16 +208,16 @@ public static class SeedService
                 },
                 SocialMedia = new SocialMedia
                 {
-                    Platform = SocialMediaPlatformEnum.Facebook,
-                    Url = "https://facebook.com/indie-game"
+                    Platform = SocialMediaPlatformEnum.Facebook, Url = "https://facebook.com/indie-game"
                 }
             }
         };
 
-        await dbContext.Users.AddRangeAsync(usersSeedData);
-        await dbContext.BlogArticles.AddRangeAsync(blogArticlesSeedData);
-        await dbContext.Categories.AddRangeAsync(categoriesSeedData);
-        await dbContext.Projects.AddRangeAsync(projectsSeedData);
+        await SeedEntity(dbContext.Users, usersSeedData, u => u.Id);
+        await SeedEntity(dbContext.BlogArticles, blogArticlesSeedData, a => a.Id);
+        await SeedEntity(dbContext.Categories, categoriesSeedData, c => c.Id);
+        await SeedEntity(dbContext.Projects, projectsSeedData, p => p.Id);
+
         await dbContext.SaveChangesAsync();
     }
 }

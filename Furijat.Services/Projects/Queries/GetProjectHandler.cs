@@ -16,7 +16,7 @@ public class GetProjectHandler : IQueryHandler<GetProjectQuery, ProjectResponseD
 
     public async Task<ProjectResponseDTO> HandleAsync(GetProjectQuery request, CancellationToken cancellationToken = default)
     {
-        var result = await _projectRepository.GetProjectAsync(request.Id);
+        var result = await _projectRepository.GetProjectAsync(request.ProjectId);
 
         return result;
     }

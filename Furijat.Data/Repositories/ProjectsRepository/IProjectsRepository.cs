@@ -6,7 +6,7 @@ namespace Furijat.Data.Repositories.ProjectsRepository;
 
 public interface IProjectsRepository
 {
-    public Task<List<ProjectResponseDTO>> GetProjectsAsync(string? categoryId);
+    public Task<PaginatedProjectsResponseDTO> GetProjectsAsync(int? pageNumber, ProjectCategoryEnum? category);
 
     public Task<ProjectResponseDTO> GetProjectAsync(string projectId);
 

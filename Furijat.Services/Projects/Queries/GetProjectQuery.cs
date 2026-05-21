@@ -3,4 +3,4 @@ using Furijat.Services.Base.Queries;
 
 namespace Furijat.Services.Projects.Queries;
 
-public record GetProjectQuery(string Id) : IQuery<ProjectResponseDTO>;
+public record GetProjectQuery(string ProjectId) : IQuery<ProjectResponseDTO>;

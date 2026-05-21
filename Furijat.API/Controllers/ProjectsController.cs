@@ -1,93 +1,66 @@
 ﻿using Furijat.Data.DTOs.RequestDTO;
-using Furijat.Data.DTOs.ResponseDTO;
-using Furijat.Data.Repositories.ProjectsRepository;
+using Furijat.Data.Enums;
+using Furijat.Services.Base.Commands;
+using Furijat.Services.Base.Queries;
+using Furijat.Services.Projects.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Furijat.API.Controllers;
 
 [Route("projects")]
-public class ProjectsController : BaseController
+public class ProjectsController(IQueryDispatcher queryDispatcher, ICommandDispatcher commandDispatcher) : BaseController
 {
-    private readonly IProjectsRepository _projectsRepo;
-
-    public ProjectsController(IProjectsRepository projectsRepo)
+    [HttpGet("projects")]
+    public async Task<IActionResult> GetProjects(int pageNumber, ProjectCategoryEnum? category)
     {
-        _projectsRepo = projectsRepo;
+        var query = new GetProjectsQuery(pageNumber, category);
+
+        var result = await queryDispatcher.QueryAsync(query);
+
+        return Ok(result);
     }
 
-    [HttpGet("projects/{pageNumber}")]
-    public async Task<IActionResult> GetProjects(int pageNumber)
+    [HttpGet("{projectId}")]
+    public async Task<IActionResult> GetProject(string projectId)
     {
-        var pageSize = 10;
+        var query = new GetProjectQuery(projectId);
 
-        if (pageNumber == 0)
-        {
-            List<ProjectResponseDTO> projects = await _projectsRepo.GetProjectsAsync(null);
-            return Ok(projects);
-        }
-        else
-        {
-            List<ProjectResponseDTO> projects = await _projectsRepo.GetProjectsAsync(null);
-            var totalPages = 0;
-            var totalPagesDecimal = projects.Count / (decimal)pageSize;
+        var result = await queryDispatcher.QueryAsync(query);
 
-            if (totalPagesDecimal % 1 == 0)
-            {
-                totalPages = (int)totalPagesDecimal;
-            }
-            else
-            {
-                totalPages = (int)totalPagesDecimal + 1;
-            }
-
-            List<ProjectResponseDTO> projectsRes = projects.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-
-            var response = new
-            {
-                totalPages, projects = projectsRes
-            };
-            return Ok(response);
-        }
-    }
-
-    [HttpGet("project/{projectid}")]
-    public async Task<ProjectResponseDTO> GetProject(string projectid)
-    {
-        return await _projectsRepo.GetProjectAsync(projectid);
+        return Ok(result);
     }
 
     [Authorize]
-    [HttpPost("project/add")]
-    public async Task<bool> AddProject(ProjectRequestDTO projecttoadd)
+    [HttpPost("add")]
+    public async Task<IActionResult> AddProject(ProjectRequestDTO newProjectRequest)
     {
-        var authheader = HttpContext.Request.Headers["Authorization"];
-        var token = "";
+        var command = new RegisterNewProjectCommand(newProjectRequest);
 
-        if (authheader.ToString().StartsWith("Bearer"))
-        {
-            token = authheader.ToString().Substring("Bearer ".Length).Trim();
-        }
+        var result = await commandDispatcher.DispatchAsync(command);
 
-        if (!string.IsNullOrEmpty(token))
-        {
-            return await _projectsRepo.AddProjectAsync(projecttoadd);
-        }
-
-        return false;
+        return Ok(result);
     }
 
     [Authorize]
-    [HttpPost("project/update")]
-    public async Task<bool> UpdateProject(ProjectRequestDTO projecttoadd)
+    [HttpPost("update")]
+    public async Task<IActionResult> UpdateProject(ProjectRequestDTO projecttoadd)
     {
-        return await _projectsRepo.UpdateProjectAsync(projecttoadd);
+        var command = new UpdateProjectCommand(newProjectRequest);
+
+        var result = await commandDispatcher.DispatchAsync(command);
+
+        return Ok(result);
     }
 
     [Authorize]
-    [HttpPost("project/remove")]
-    public async Task<bool> RemoveProject(string projectid)
+    [HttpPost("remove")]
+    public async Task<IActionResult> RemoveProject(string projectId)
     {
-        return await _projectsRepo.RemoveProjectAsync(projectid);
+        var command = new RemoveProjectCommand(projectId);
+
+        var result = await commandDispatcher.DispatchAsync(command);
+
+        return Ok(result);
     }
 }

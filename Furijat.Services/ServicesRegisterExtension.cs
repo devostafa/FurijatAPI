@@ -1,12 +1,7 @@
 ﻿using System.Text;
 using Furijat.Data;
-using Furijat.Services.Authentication;
 using Furijat.Services.AutoMapper;
 using Furijat.Services.Base.Commands;
-using Furijat.Services.Donation;
-using Furijat.Services.Jwt;
-using Furijat.Services.Mail;
-using Furijat.Services.PasswordHash;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -19,7 +14,7 @@ public static class ServicesRegisterExtension
     public static void AddServices(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddHttpContextAccessor();
-        
+
         // Scans and registers class services from Services project
         serviceCollection.Scan(selector => selector
             .FromAssemblyOf<CommandDispatcher>()
@@ -50,7 +45,7 @@ public static class ServicesRegisterExtension
     {
         serviceCollection.AddAuthentication().AddJwtBearer(options =>
         {
-            var secretKey = configuration["SecretKey"];
+            var secretKey = configuration["Jwt:SecretKey"];
 
             if (secretKey == null) return;
 
@@ -59,8 +54,8 @@ public static class ServicesRegisterExtension
                 ValidateLifetime = true,
                 ValidateIssuer = true,
                 ValidateAudience = false,
-                ValidIssuer = configuration["URL"],
-                ValidAudience = configuration["ClientURL"],
+                ValidIssuer = configuration["Jwt:Issuer"],
+                ValidAudience = configuration["Jwt:ClientURL"],
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
             };
@@ -71,7 +66,7 @@ public static class ServicesRegisterExtension
             opt.AddPolicy("CorsPolicy",
                 corsPolicyBuilder =>
                 {
-                    corsPolicyBuilder.WithOrigins(configuration["ClientURL"], configuration["ApiUrl"]).AllowAnyHeader()
+                    corsPolicyBuilder.WithOrigins(configuration["Cors:ClientOrigin"], configuration["Cors:ApiOrigin"]).AllowAnyHeader()
                         .AllowAnyMethod();
                 });
         });

@@ -1,22 +1,18 @@
-﻿using Furijat.Data.Models;
+﻿using Furijat.Data.Enums;
 
 namespace Furijat.Data.DTOs.ResponseDTO;
 
-public record ProjectResponseDTO
-{
-    public Guid Id { get; init; }
-    public string Title { get; init; }
-    public string Description { get; init; }
-    public Guid CategoryId { get; init; }
-    public Category Category { get; init; }
-    public Guid UserId { get; init; }
-    public UserResponseDTO UserOwner { get; init; }
-    public string Facebook { get; init; }
-    public string? X { get; init; }
-    public string? Instagram { get; init; }
-    public int? CurrentFund { get; init; }
-    public int? TotalFundRequired { get; init; }
-
-    public string[]? Images { get; init; }
-    // public List<DonationResponseDTO>? Donations { get; init; }
-}
+public record ProjectResponseDTO(
+    Guid Id,
+    string Title,
+    string Description,
+    ProjectCategoryEnum Category,
+    Guid UserId,
+    UserResponseDTO UserOwner,
+    string Facebook,
+    string? X,
+    string? Instagram,
+    int? CurrentFund,
+    int? TotalFundRequired,
+    string[]? ImagesNames
+    );

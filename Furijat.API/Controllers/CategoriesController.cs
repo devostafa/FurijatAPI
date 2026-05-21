@@ -1,26 +1,16 @@
 ﻿using Furijat.Data.DTOs.ResponseDTO;
-using Furijat.Data.Repositories.BlogRepository;
-using Furijat.Data.Repositories.CategoriesRepository;
+using Furijat.Services.Base.Queries;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Furijat.API.Controllers;
 
-/*
-[Route("Categories")]
-public class CategoriesController : BaseController
+[Route("categories")]
+public class CategoriesController(IQueryDispatcher queryDispatcher) : BaseController
 {
-    private readonly ICategoryRepository _categoryrepo;
-    private IBlogRepository _newsrepo;
 
-    public CategoriesController(ICategoryRepository categoryrepo)
-    {
-        _categoryrepo = categoryrepo;
-    }
-
-    [HttpGet("GetCategories")]
+    [HttpGet("")]
     public async Task<List<CategoryResponseDTO>> GetCategories()
     {
         return await _categoryrepo.GetCategories();
     }
 }
-*/

@@ -24,7 +24,7 @@ public class ProjectsRepository : IProjectsRepository
         _webHostEnv = webHostEnv;
     }
 
-    public async Task<PaginatedProjectsResponseDTO> GetProjectsAsync(int? pageNumber, ProjectCategoryEnum? category)
+    public async Task<PaginatedProjectsResponseDTO> GetProjectsAsync(int? pageNumber, string? categoryId)
     {
         const int itemsPerPage = 10;
         var actualPage = pageNumber ?? 1;
@@ -32,9 +32,9 @@ public class ProjectsRepository : IProjectsRepository
 
         IQueryable<Project> query = _db.Projects.AsQueryable();
 
-        if (!category.Equals(null))
+        if (!string.IsNullOrEmpty(categoryId))
         {
-            query = query.Where(p => p.Category == category);
+            query = query.Where(p => p.Category.Id.ToString() == categoryId);
         }
 
         var totalProjects = await query.CountAsync();

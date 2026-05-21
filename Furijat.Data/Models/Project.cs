@@ -10,7 +10,8 @@ public class Project
     public string Description { get; set; }
     public int Likes { get; set; }
     public ProjectStatusEnum Status { get; set; }
-    public ProjectCategoryEnum Category { get; set; }
+    public Guid CategoryId { get; set; }
+    public Category Category { get; set; }
     public Guid UserId { get; set; }
     public User User { get; set; }
     public int CurrentFund { get; set; }

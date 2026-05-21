@@ -1,44 +1,49 @@
 ﻿using Furijat.Data.DTOs.RequestDTO;
-using Furijat.Data.DTOs.ResponseDTO;
-using Furijat.Data.Repositories.UsersRepository;
-using Furijat.Services.Authentication;
+using Furijat.Services.Base.Commands;
+using Furijat.Services.Base.Queries;
+using Furijat.Services.Users.Commands;
+using Furijat.Services.Users.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Furijat.API.Controllers;
 
 [Route("auth")]
-public class AuthenticationController : BaseController
+public class AuthenticationController(IQueryDispatcher queryDispatcher, ICommandDispatcher commandDispatcher) : BaseController
 {
-    private readonly IAuthentication _auth;
-    private readonly IUserRepository _useRepo;
-
-    public AuthenticationController(IAuthentication auth, IUserRepository userRepo)
-    {
-        _auth = auth;
-        _useRepo = userRepo;
-    }
 
     [HttpPost("login")]
-    public async Task<string?> Login(LoginRequestDTO loginReq)
+    public async Task<IActionResult> Login(LoginRequestDTO loginReq)
     {
-        return await _auth.LoginAsync(loginReq);
+        var command = new LoginUserCommand(loginReq);
+
+        var result = await commandDispatcher.DispatchAsync(command);
+
+        return Ok(result);
     }
 
     [HttpPost("register")]
-    public async Task<bool> Register(RegisterRequestDTO registerReq)
+    public async Task<IActionResult> Register(RegisterRequestDTO registerReq)
     {
-        return await _auth.RegisterAsync(registerReq);
+        var command = new RegisterUserCommand(registerReq);
+
+        var result = await commandDispatcher.DispatchAsync(command);
+
+        return Ok(result);
     }
 
     [Authorize]
     [HttpGet("user")]
-    public async Task<UserResponseDTO?> GetUserInfo()
+    public async Task<IActionResult> GetUserInfo()
     {
         var userId = HttpContext.User.FindFirst("userId").Value;
 
-        if (userId == null) return null;
+        if (userId == null) return BadRequest("User Id not found");
 
-        return await _useRepo.GetUserAsync(userId);
+        var query = new GetUserQuery(userId);
+
+        var result = await queryDispatcher.QueryAsync(query);
+
+        return Ok(result);
     }
 }

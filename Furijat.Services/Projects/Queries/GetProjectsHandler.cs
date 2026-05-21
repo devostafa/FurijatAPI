@@ -16,6 +16,6 @@ public class GetProjectsHandler : IQueryHandler<GetProjectsQuery, PaginatedProje
 
     public async Task<PaginatedProjectsResponseDTO> HandleAsync(GetProjectsQuery request, CancellationToken cancellationToken = default)
     {
-        return await _projectRepository.GetProjectsAsync(request.pageNumber, request.category);
+        return await _projectRepository.GetProjectsAsync(request.pageNumber, request.categoryId);
     }
 }

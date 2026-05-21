@@ -1,22 +1,29 @@
-﻿using Furijat.Data.DTOs.ResponseDTO;
-using Furijat.Data.Repositories.BlogRepository;
+﻿using Furijat.Services.Base.Queries;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Furijat.API.Controllers;
 
 [Route("blog")]
-public class BlogController : BaseController
+public class BlogController(IQueryDispatcher queryDispatcher) : BaseController
 {
-    private readonly IBlogRepository _blogRepo;
 
-    public BlogController(IBlogRepository blogRepo)
+    [HttpGet("")]
+    public async Task<IActionResult> GetBlogPosts()
     {
-        _blogRepo = blogRepo;
+        var query = new GetBlogPostsQuery();
+
+        var result = await queryDispatcher.QueryAsync(query);
+
+        return Ok(result);
     }
 
-    [HttpGet("articles")]
-    public async Task<List<BlogArticleResponseDTO>> GetArticles()
+    [HttpGet("{postId}")]
+    public async Task<IActionResult> GetBlogPost(string postId)
     {
-        return await _blogRepo.GetNews();
+        var query = new GetBlogPostQuery(postId);
+
+        var result = await queryDispatcher.QueryAsync(query);
+
+        return Ok(result);
     }
 }

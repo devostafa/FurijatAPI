@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Furijat.API.Controllers;
 
+/*
 [Route("Categories")]
 public class CategoriesController : BaseController
 {
@@ -22,3 +23,4 @@ public class CategoriesController : BaseController
         return await _categoryrepo.GetCategories();
     }
 }
+*/
